@@ -1,1 +1,2 @@
 clc
+clear

@@ -1,2 +1,2 @@
-clear all
+clear 
 clc
