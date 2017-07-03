@@ -4,9 +4,9 @@ clear all
 %% Spectrum
 
 %% GaN Series 1 spectrum profile
-%EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/GaN_EPistar-nanowiresVEELS_28032017/Data_27_06_2017/Profile Of sum_GaN_series1_25images.dm3');
-%S = EELS.spectrum;
-%l = EELS.energy_loss_axis;
+EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/GaN_EPistar-nanowiresVEELS_28032017/Data_27_06_2017/Profile Of sum_GaN_series1_25images.dm3');
+S = EELS.spectrum;
+l = EELS.energy_loss_axis;
 
 %% GaN Series 1 Plasmon subtracted spectrum profile
 %EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/GaN_EPistar-nanowiresVEELS_28032017/Data_27_06_2017/Profile Of sum_GaN_series1_25images.dm3');
