@@ -1,0 +1,177 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>plural_scattering</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-22"><meta name="DC.source" content="plural_scattering.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Zero-pad and center the zero-loss peak</a></li><li><a href="#5">Convolution with low-loss spectrum</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> psd = plural_scattering(back_sub_core_loss_spectrum, low_loss_spectrum)
+</pre><p>The routine provids the plural scattering distribution by convolving the low-loss spectrum and single scattering ionization edge. The prior conditions for this is that the dispersion of low-loss and core-loss must be same. The inonization edge must be background subtracted.</p><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% Input :</span>
+<span class="comment">% back_sub_core_loss_spectrum - The background subtracted core-loss edge.</span>
+<span class="comment">%           low_loss_spectrum - low-loss spectrum with zero-loss and</span>
+<span class="comment">%                               plasmon peaks. The intergral of the</span>
+<span class="comment">%                               low-loss must be unity. Zero-loss peak must</span>
+<span class="comment">%                               be calibrated to $0eV$</span>
+<span class="comment">% Output:</span>
+<span class="comment">%                         psd - Plural scattering distribution.</span>
+<span class="comment">%</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2>Zero-pad and center the zero-loss peak<a name="3"></a></h2><p>In matlab the center index is considered as <img src="plural_scattering_eq00202142981986870057.png" alt="$0$" style="width:4px;height:6px;"> while convoluting. Hence move the zero-loss peak so that zero-loss peak is at exactly in the midle of the spectrum. This can be done by zero-padding before zero-loss and zero-pad after the end of the spectrum to make the length double. If originally zero-loss spectrum has <img src="plural_scattering_eq05919485281590828633.png" alt="$1024$" style="width:14px;height:6px;"> data points and <img src="plural_scattering_eq17852066321269533557.png" alt="$0eV$" style="width:13px;height:6px;"> is at the channel <img src="plural_scattering_eq12220848736999192936.png" alt="$100$" style="width:11px;height:6px;">. Then zero-pad <img src="plural_scattering_eq13511866748844958498.png" alt="$1024 - 100 = 924$" style="width:55px;height:6px;"> data points before the zero-loss spectrum and zero-pad <img src="plural_scattering_eq12220848736999192936.png" alt="$100$" style="width:11px;height:6px;"> data points after the zero-loss spectrum. Hence after zero-padding the length of the centered spectrum will be <img src="plural_scattering_eq15263817768767815886.png" alt="$2048$" style="width:15px;height:6px;"> data points.</p><p>Prepare the data to make it a column vector</p><pre class="codeinput"><span class="keyword">if</span> iscolumn(back_sub_core_loss_spectrum)
+    <span class="comment">% Assign column vector to a local variable _E_</span>
+    E = back_sub_core_loss_spectrum;
+<span class="keyword">else</span>
+    <span class="comment">% Transpose matrix to make it column vector</span>
+    E = back_sub_core_loss_spectrum';
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> iscolumn(low_loss_spectrum)
+    <span class="comment">% Assign column vector to a local variable _Z_</span>
+    Z = low_loss_spectrum;
+<span class="keyword">else</span>
+    <span class="comment">% Transpose matrix to make it column vector</span>
+    Z = low_loss_spectrum';
+<span class="keyword">end</span>
+
+<span class="comment">% Get the channel at 0eV</span>
+ind_Z = find(Z==max(Z));
+
+<span class="comment">% Zero-pad before and after the low-loss spectrum</span>
+nZ = [zeros(length(Z)-ind_Z,1); Z; zeros(ind_Z,1)];
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in plural_scattering (line 31)
+if iscolumn(back_sub_core_loss_spectrum)
+</pre><h2>Convolution with low-loss spectrum<a name="5"></a></h2><p>In plural scattering the the intensity is redistributed along the energy-loss axis. But the total integral remains same. Hence the convolving term i.e low-loss whose integral must be unity.</p><p><img src="plural_scattering_eq11244716188807587335.png" alt="$$\int_{eV} SSD(E) \delta E = \int_{eV} PSD(E) \delta E $$" style="width:109px;height:17px;"></p><p><img src="plural_scattering_eq17944296805442613176.png" alt="$$\int_{eV} Z(E) \delta E = 1 $$" style="width:52px;height:17px;"></p><p>After convolution, only the data points at the center are considered so that the core-loss and the convolved spectrum (PSD) have same length.</p><pre class="codeinput">psd = conv(E,nZ/sum(nZ),<span class="string">'same'</span>);
+</pre><p>The length of <i>PSD(E)</i> is same as the original <i>SSD(E)</i>.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function psd = plural_scattering(back_sub_core_loss_spectrum, low_loss_spectrum)
+%%
+% The routine provids the plural scattering distribution by convolving the
+% low-loss spectrum and single scattering ionization edge. The prior
+% conditions for this is that the dispersion of low-loss and core-loss must
+% be same. The inonization edge must be background subtracted.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Input : 
+% back_sub_core_loss_spectrum - The background subtracted core-loss edge.
+%           low_loss_spectrum - low-loss spectrum with zero-loss and
+%                               plasmon peaks. The intergral of the
+%                               low-loss must be unity. Zero-loss peak must
+%                               be calibrated to $0eV$
+% Output: 
+%                         psd - Plural scattering distribution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Zero-pad and center the zero-loss peak
+% In matlab the center index is considered as $0$ while convoluting. Hence
+% move the zero-loss peak so that zero-loss peak is at exactly in the midle
+% of the spectrum. This can be done by zero-padding before zero-loss and
+% zero-pad after the end of the spectrum to make the length double. If
+% originally zero-loss spectrum has $1024$ data points and $0eV$ is at the
+% channel $100$. Then zero-pad $1024 - 100 = 924$ data points before the 
+% zero-loss spectrum and zero-pad $100$ data points after the zero-loss
+% spectrum. Hence after zero-padding the length of the centered spectrum
+% will be $2048$ data points.
+%%
+% Prepare the data to make it a column vector
+if iscolumn(back_sub_core_loss_spectrum)
+    % Assign column vector to a local variable _E_
+    E = back_sub_core_loss_spectrum;
+else
+    % Transpose matrix to make it column vector
+    E = back_sub_core_loss_spectrum';
+end
+
+if iscolumn(low_loss_spectrum)
+    % Assign column vector to a local variable _Z_
+    Z = low_loss_spectrum;
+else
+    % Transpose matrix to make it column vector
+    Z = low_loss_spectrum';
+end
+
+% Get the channel at 0eV
+ind_Z = find(Z==max(Z));
+
+% Zero-pad before and after the low-loss spectrum
+nZ = [zeros(length(Z)-ind_Z,1); Z; zeros(ind_Z,1)];
+
+%% Convolution with low-loss spectrum
+% In plural scattering the the intensity is redistributed along the
+% energy-loss axis. But the total integral remains same. Hence the 
+% convolving term i.e low-loss whose integral must be unity.
+%% 
+% $$\int_{eV} SSD(E) \delta E = \int_{eV} PSD(E) \delta E $$
+%%
+% $$\int_{eV} Z(E) \delta E = 1 $$
+%% 
+% After convolution, only the data points at the center are considered so
+% that the core-loss and the convolved spectrum (PSD) have same length.
+%%
+psd = conv(E,nZ/sum(nZ),'same');
+%%
+% The length of _PSD(E)_ is same as the original _SSD(E)_.
+##### SOURCE END #####
+--></body></html>
