@@ -16,14 +16,20 @@ if isempty(poolobj)
 end
 
 %% Plasmon map
-
-if iscolumn(EELS.energy_loss_axis)
-    llow = EELS.energy_loss_axis;
+if isfield(EELS, EELS.calibrated_energy_loss_axis)
+    llow = EELS.calibrated_energy_loss_axis;
 else
-    llow = EELS.energy_loss_axis';
+    if iscolumn(EELS.energy_loss_axis)
+        E(1,1,1:length(EELS.energy_loss_axis)) = EELS.energy_loss_axis;
+        llow = repmat(E, EELS.SI_x, EELS.SI_y);
+    else
+        E(1,1,1:length(EELS.energy_loss_axis)) = EELS.energy_loss_axis';
+        llow = repmat(E, EELS.SI_x, EELS.SI_y);
+    end
 end
 
 S = @(ii,jj) squeeze(EELS.SImage(ii,jj,:));
+l = @(ii,jj) squeeze(llow(ii,jj,:));
 
 Ep_map = zeros(EELS.SI_x,EELS.SI_y);
 
@@ -38,7 +44,7 @@ c = parallel.pool.Constant(1:EELS.SI_y);
 tic;
 parfor ii = 1:EELS.SI_x
     s(ii) = now; % plotIntervals data
-    Ep_map(ii,:) = arrayfun(@(jj) plasmon(llow,S(ii,jj)), c.Value);
+    Ep_map(ii,:) = arrayfun(@(jj) plasmon(l,S,ii,jj), c.Value);
     f(ii) = now; % plotIntervals data
     id(ii) = getMyTaskID; % plotIntervals data % getMyTaskID.m required
     
@@ -56,8 +62,9 @@ figure;
 plotIntervals(s, f, id, min(s)); % plotIntervals
 end
 
-function Ep = plasmon(l,S)
+function Ep = plasmon(l,S,ii,jj)
 
-[~, Ep, ~, ~] = plasmon_fit(l, S);
+fprintf('Fitting Spectrum (%d,%d)',ii,jj);
+[~, Ep, ~, ~] = plasmon_fit(l(ii,jj), S(ii,jj));
 
 end

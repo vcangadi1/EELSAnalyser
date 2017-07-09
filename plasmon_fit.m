@@ -37,7 +37,8 @@ l = calibrate_zero_loss_peak(l,Z,'Gaussian');
 %% Find approximate plasmon peak and width
 
 aprox_Ep = plasmon_peak(l,Z);
-aprox_FWHM = plasmon_width(l,Z);
+%aprox_FWHM = plasmon_width(l,Z);
+aprox_FWHM = 20;
 
 %% Calculate Lorentz function fitting range
 
