@@ -1,11 +1,14 @@
 clc
+clear all
 
 %% Load SI of high loss and low loss
 
-EELS = load('C:\Users\elp13va.VIE\Desktop\EELS data\Ge-basedSolarCell_24082015\artifact_removed_EELS Spectrum Image disp1offset950time2s');
-EELSZ = load('C:\Users\elp13va.VIE\Desktop\EELS data\Ge-basedSolarCell_24082015\artifact_removed_EELS Spectrum Image disp0.2offset0time0.1s');
-
+EELS = load('C:\Users\elp13va.VIE\Desktop\EELS data\Ge-basedSolarCell_24082015\artifact_removed_EELS Spectrum Image disp1offset950time2s.mat');
+EELS = EELS.EELS;
 l = EELS.energy_loss_axis';
+
+EELZ = load('C:\Users\elp13va.VIE\Desktop\EELS data\Ge-basedSolarCell_24082015\artifact_removed_EELS Spectrum Image disp0.2offset0time0.1s.mat');
+EELZ = EELZ.EELS;
 
 %% Load differential cross sections
 
@@ -13,8 +16,42 @@ dfcCu = diffCS_L23(29,923,197,16.6,l);
 dfcGa = diffCS_L23(31,1115,197,16.6,l);
 dfcAs = diffCS_L23(33,1323,197,16.6,l);
 
+%dc = [dfcCu, dfcGa, dfcAs];
+
+%% define lb, ub, p0 for lsqcurvefit
+lb = [1,0,0,0,0];
+ub = [1E4,1E4,1E4];
+
+p0 = [100,100,100];
+
 %% fit background
 
-for ii = EELS.SI_x:-1:1
-    for jj = EELS.SI_y:-1:1
-        B(ii,jj,1:EELS.SI_) = EELS
+for ii = 90:-1:1
+    for jj = 43:-1:1
+        fprintf('Fitting (%d,%d)\n',ii,jj);
+        S = squeeze(EELS.SImage(ii,jj,:));
+        % smooth spectrum with spline function
+        S = feval(Spline(l,S),l);
+        Z = squeeze(EELZ.SImage(ii,jj,:));
+        % plural scatter differential cross-section
+        pdfcCu = plural_scattering(dfcCu, Z);
+        pdfcGa = plural_scattering(dfcGa, Z);
+        pdfcAs = plural_scattering(dfcAs, Z);
+        % model background with exponential function
+        B(ii,jj,1:EELS.SI_z) = feval(Exponential_fit(l(1:63),S(1:63)),l);
+        rS = S - squeeze(B(ii,jj,:));
+        fun = @(p,l) p(1)*pdfcCu + p(2)*pdfcGa + p(3)*pdfcAs;
+        p = lsqcurvefit(fun,p0,l,rS,lb,ub);
+        %A(ii,jj) = p(1);
+        %r(ii,jj) = p(2);
+        Cu(ii,jj) = p(1);
+        Ga(ii,jj) = p(2);
+        As(ii,jj) = p(3);
+        R2(ii,jj) = rsquare(S,p(1)*pdfcCu + p(2)*pdfcGa + p(3)*pdfcAs);
+    end
+end
+
+EELB = EELS;
+EELB.SImage = B;
+
+plotEELS(EELB)
