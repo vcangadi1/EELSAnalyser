@@ -38,4 +38,5 @@ difcs = diff(arrayfun(@(ii) Sigmak3(Z,Edge_onset_eV,ii,E0,beta), rng));
 %% Arrange the core-loss to be at the edge onset
 
 dcs = [zeros(onset_ch,1);difcs(1:(length(l)-onset_ch+1))];
+dcs = dcs(1:end-1);
 

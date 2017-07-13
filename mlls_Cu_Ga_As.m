@@ -12,20 +12,20 @@ EELZ = EELZ.EELS;
 
 %% Load differential cross sections
 
-dfcCu = diffCS_L23(29,928,197,16.6,l);
-dfcGa = diffCS_L23(31,1120,197,16.6,l);
-dfcAs = diffCS_L23(33,1325,197,16.6,l);
+dfcCu = diffCS_L23(29,923,197,16.6,l);
+dfcGa = diffCS_L23(31,1115,197,16.6,l);
+dfcAs = diffCS_L23(33,1323,197,16.6,l);
 
 %dc = [dfcCu, dfcGa, dfcAs];
 
 %% define lb, ub, p0 for lsqcurvefit
 lb = [0,0,0];
-ub = [1E10,1E10,1E10];
+ub = [1E4,1E4,1E4];
 
-p0 = [300,300,300];
+p0 = [30,30,30];
 
 %% fit background
-
+tic;
 for ii = 90:-1:1
     for jj = 43:-1:1
         fprintf('Fitting (%d,%d)\n',ii,jj);
@@ -39,20 +39,22 @@ for ii = 90:-1:1
         pdfcCu = plural_scattering(dfcCu, Z);
         pdfcGa = plural_scattering(dfcGa, Z);
         pdfcAs = plural_scattering(dfcAs, Z);
+        %pdfcAl = plural_scattering(dfcAl, Z);
         % model background with exponential function
         B(ii,jj,1:EELS.SI_z) = S - feval(Exponential_fit(l(1:63),S(1:63)),l);
         rS = squeeze(B(ii,jj,:));
-        fun = @(p,l) p(1)*pdfcCu + (p(2)+p(1))*pdfcGa + (p(3)+p(2)+p(1))*pdfcAs;
+        fun = @(p,l) p(1)*pdfcCu + (p(2)+p(1))*pdfcGa + (p(3)+p(2)+p(1))*pdfcAs;% + (p(4)+p(3)+p(2)+p(1))*pdfcAl;
         p = lsqcurvefit(fun,p0,l,rS,lb,ub);
         %A(ii,jj) = p(1);
         %r(ii,jj) = p(2);
         Cu(ii,jj) = p(1);
         Ga(ii,jj) = p(2);
         As(ii,jj) = p(3);
+        %Al(ii,jj) = p(4);
         R2(ii,jj) = rsquare(rS, p(1)*pdfcCu + (p(2)+p(1))*pdfcGa + (p(3)+p(2)+p(1))*pdfcAs);
     end
 end
-
+toc;
 EELB = EELS;
 EELB.SImage = B;
 
