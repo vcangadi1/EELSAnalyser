@@ -17,7 +17,7 @@ e = 63;
 load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp1offset950time2s.mat');
 l = EELS.energy_loss_axis';
 S = squeeze(EELS.SImage(ii,jj,:));
-S = feval(Spline(l,S),l);
+%S = feval(Spline(l,S),l);
 
 % Load low-loss spectrum and energy-loss
 %EELZ = load('C:\Users\elp13va.VIE\Desktop\EELS data\Ge-basedSolarCell_24082015\artifact_removed_EELS Spectrum Image disp0.2offset0time0.1s.mat');
