@@ -54,7 +54,7 @@ for ii = 90:-1:1
         As(ii,jj) = p(3);
         %Al(ii,jj) = p(4);
         %R2(ii,jj) = rsquare(rS, p(1)*pdfcCu + (p(2)+p(1))*pdfcGa + (p(3)+p(2)+p(1))*pdfcAs);
-        R2(ii,jj) = rsquare(rS, fun(p,l));
+        R2(ii:jj) = rsquare(rS,);
     end
 end
 toc;
