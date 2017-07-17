@@ -20,8 +20,7 @@ S = core_loss_spectrum;
 % model background with exponential function
 b = model_begin_channel;
 e = model_end_channel;
-back = feval(Exponential_fit(l(b:e),S(b:e)),l);
-rS = S - back;
+rS = S - feval(Exponential_fit(l(b:e),S(b:e)),l);
 
 %% define lb, ub, p0 for lsqcurvefit
 
@@ -39,8 +38,8 @@ R2 = rsquare(rS, fun(p,l));
 toc;
 
 %% display
-%disp(p);
-%disp(R2);
-%figure;
-%plotEELS(l,rS)
-%plotEELS(l,fun(p,l))
+disp([p(1) diff(p)]);
+disp(R2);
+figure;
+plotEELS(l,rS)
+plotEELS(l,fun(p,l))
