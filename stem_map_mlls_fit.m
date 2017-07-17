@@ -19,18 +19,18 @@ e = model_end_channel;
 
 %% Differential cross-section
 dfc = Diff_cross_sections;
-% Plural scattering
-if nargin == 5
-    dfc = plural_scattering(dfc, ll);
-end
 
 %% stem mlls fit
 p = zeros(90,43,size(dfc,2));
 back = zeros(90,43,length(l));
 
-for ii = 90:-1:1
-    for jj = 43:-1:1
+for ii = 90:-1:90
+    for jj = 43:-1:43
+        if nargin == 5
+            dfc = plural_scattering(dfc, ll(ii,jj));
+        end
         [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit(S(ii,jj), l, b, e, dfc);
+        fprintf('(%d,%d) pixel\n',ii,jj);
     end
 end
 
