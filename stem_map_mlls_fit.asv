@@ -1,10 +1,9 @@
-function [p, R2, fun, back] = stem_map_mlls_fit(EELS, model_begin_channel, model_end_channel, Diff_cross_sections, Optional_EELZ_low_loss)
+function [p, R2, fun, back] = stem_map_mlls_fit(core_loss_spectrum, energy_loss_HIGH_LOSS, model_begin_channel, model_end_channel, Diff_cross_sections)
 %%
 
 
 %% Load spectrum
 S = @(ii,jj) squeeze(EELS.SImage(ii,jj,:));
-ll = @(ii,jj) squeeze(Optional_EELZ_low_loss.SImage(ii,jj,:));
 
 %% Load energy-loss axis
 if isrow(EELS.energy_loss_axis)
@@ -14,23 +13,25 @@ else
 end
 
 %% background begin - end
-b = model_begin_channel;
-e = model_end_channel;
+b = 1;
+e = 63;
 
 %% Differential cross-section
+
 dfc = Diff_cross_sections;
 % Plural scattering
-if nargin == 5
-    dfc = plural_scattering(dfc, ll);
+if nargin == 6
+    dfc = plural_scattering(dfc, Optional_lowloss_spectrum);
 end
 
 %% stem mlls fit
+
 p = zeros(90,43,size(dfc,2));
 back = zeros(90,43,length(l));
 
 for ii = 90:-1:1
     for jj = 43:-1:1
-        [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit(S(ii,jj), l, b, e, dfc);
+        [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit(S(ii,jj), l, b, e, Diff_cross_sections);
     end
 end
 

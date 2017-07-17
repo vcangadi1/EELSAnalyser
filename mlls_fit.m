@@ -6,8 +6,6 @@ dfc = Diff_cross_sections;
 % Plural scattering
 if nargin == 6
     dfc = plural_scattering(dfc, Optional_lowloss_spectrum);
-else
-    dfc = Diff_cross_sections;
 end
 
 % high loss energy-loss axis
@@ -37,6 +35,9 @@ options = optimoptions(@lsqcurvefit,'display','none');
 p = lsqcurvefit(fun,p0,l,rS,lb,ub,options);
 R2 = rsquare(rS, fun(p,l));
 toc;
+
+%% Redefine simpler function
+fun = @(p) dfc * p';
 
 %% display
 %disp(p);
