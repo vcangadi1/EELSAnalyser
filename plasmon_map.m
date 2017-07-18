@@ -16,7 +16,7 @@ if isempty(poolobj)
 end
 
 %% Plasmon map
-if isfield(EELS, EELS.calibrated_energy_loss_axis)
+if isfield(EELS, 'calibrated_energy_loss_axis')
     llow = EELS.calibrated_energy_loss_axis;
 else
     if iscolumn(EELS.energy_loss_axis)
