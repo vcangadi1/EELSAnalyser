@@ -44,6 +44,6 @@ dcs = [zeros(onset_ch,1);difcs(1:(length(l)-onset_ch))];
 %% Remove spike noise due to differentiation
 % Smooth with hampel filter
 
-if onset_ch+55 <= length(l)
-    dcs(onset_ch+50:end) = hampel(dcs(onset_ch+50:end),13);
+if onset_ch+25 <= length(l)
+    dcs(onset_ch+20:end) = hampel(dcs(onset_ch+20:end),13);
 end

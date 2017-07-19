@@ -40,3 +40,13 @@ difcs = diff(arrayfun(@(ii) Sigmak3(Z,Edge_onset_eV,ii,E0,beta), rng));
 dcs = [zeros(onset_ch,1);difcs(1:(length(l)-onset_ch+1))];
 dcs = dcs(1:end-1);
 
+%% Remove spike noise due to differentiation
+% Smooth with hampel filter
+
+if onset_ch+25 <= length(l)
+    dcs(onset_ch+20:end) = hampel(dcs(onset_ch+20:end),13);
+end
+
+if onset_ch+55 <= length(l)
+    dcs(onset_ch+50:end) = feval(Exponential_fit(l(onset_ch+50:end),dcs(onset_ch+50:end),'exp2'),l(onset_ch+50:end));
+end

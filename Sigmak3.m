@@ -28,9 +28,8 @@ else
     %fprintf('Integration window Delta (eV) : %g\n',delta1);
     %fprintf('Incident-electron energy E0(keV) : %g\n',e0);
     %fprintf('Collection semi-angle Beta(mrad) : %g\n',beta);
-end;
+end
 einc = delta1./10;
-
 
 r=13.606;
 e = ek;
@@ -61,7 +60,7 @@ for  j=1:30;
         f=f+(dfdipl+dfprev)/2*einc;
     end;
     %fprintf(1,'%4g %17.6f %10d %13.2f %8.4f\n', e,dsbyde,delta,sigma,f);
-    if(round(delta) == round(delta1))
+    if(round(delta,1) == round(delta1,1))
         CS = sigma;
     end
     if(einc == 0)
