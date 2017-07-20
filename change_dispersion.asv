@@ -1,4 +1,4 @@
-function rEELS = change_dispersion(EELS, new_dispersion)
+function rEELS = change_dispersion(EELS, byfactor)
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,8 +11,6 @@ function rEELS = change_dispersion(EELS, new_dispersion)
 %%
 
 rEELS = EELS;
-
-byfactor = round(new_dispersion/EELS.dispersion,1);
 
 rEELS.SI_z = uint32(round(EELS.SI_z./byfactor));
 rEELS.SImage = zeros(EELS.SI_x, EELS.SI_y, rEELS.SI_z);
@@ -29,6 +27,7 @@ if byfactor > 1
     end
     
     rEELS.dispersion = EELS.dispersion*byfactor;
+    
 else
     [q,p] = numden(sym(byfactor));
     
@@ -38,10 +37,8 @@ else
         end
     end
     
-    rEELS.dispersion = EELS.dispersion*byfactor;
+    %%
+    
     rEELS.energy_loss_axis = resample(EELS.energy_loss_axis,double(p),double(q));
+    
 end
-
-clc;
-fprintf('dispersion is changed to %f eV/channel\n', rEELS.dispersion);
-strucdisp(rEELS)
