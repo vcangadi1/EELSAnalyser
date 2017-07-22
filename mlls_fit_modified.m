@@ -80,9 +80,9 @@ fun = @(p) [back,dfc] * p';
 
 %% define lb, ub, p0 for lsqcurvefit
 
-lb = [-1000,ones(1,size(dfc,2)) * 0, -10, 0];
-ub = [ones(1,size(dfc,2)+1) * 1E4, 10, 1E4];
-p0 = [ones(1,size(dfc,2)+1) * 30, 1, 1];
+lb = [ones(1,size(dfc,2)+1) * -1000, -1000, -1E10];
+ub = [ones(1,size(dfc,2)+1) * 1E4, 1000, 1E10];
+p0 = [1,ones(1,size(dfc,2)) * 30, 0, 0];
 
 %% fit background
 tic;

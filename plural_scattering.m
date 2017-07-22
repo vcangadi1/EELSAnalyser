@@ -64,6 +64,7 @@ nZ = [zeros(length(Z)-ind_Z,1); Z; zeros(ind_Z,1)];
 % After convolution, only the data points at the center are considered so
 % that the core-loss and the convolved spectrum (PSD) have same length.
 %%
-psd = convn(E,nZ/sum(nZ),'same');
+psd = convn([E;flipud(E)],nZ/sum(nZ),'same');
+psd = psd(1:length(E),:);
 %%
 % The length of _PSD(E)_ is same as the original _SSD(E)_.
