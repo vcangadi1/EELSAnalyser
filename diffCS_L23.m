@@ -24,6 +24,13 @@ if Edge_onset_eV < l(1) || Edge_onset_eV >= l(end)
     error('Edge onset value must be within the energy loss axis boundary');
 end
 
+% Check if bstar is same size as energy-loss axis
+if length(beta) == 1
+    beta = beta*ones(size(l));
+elseif length(beta) ~= length(l)
+    error('beta should be a single value or same length as energy-loss axis');
+end
+
 % Get the total range
 d = mean(diff(l));
 rng = l-l(1)+d;
@@ -34,7 +41,7 @@ rng = l-l(1)+d;
 %% Calculate differential cross section
 
 difcs = zeros(size(l));
-difcs(1:end-1) = diff(arrayfun(@(ii) Sigmal3(Atomic_Num,ii,E0,beta), rng));
+difcs(1:end-1) = diff(arrayfun(@(ii) Sigmal3(Atomic_Num,ii,E0,beta(ii)), rng));
 difcs(end) = difcs(end-1);
 
 %% Arrange the core-loss to be at the edge onset

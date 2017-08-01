@@ -28,6 +28,13 @@ if Edge_onset_eV < l(1) || Edge_onset_eV >= l(end)
     error('Edge onset value must be within the energy loss axis boundary');
 end
 
+% Check if bstar is same size as energy-loss axis
+if length(beta) == 1
+    beta = beta*ones(size(l));
+elseif length(beta) ~= length(l)
+    error('beta should be a single value or same length as energy-loss axis');
+end
+
 % Get the total range
 d = mean(diff(l));
 r = l-l(1)+d;
@@ -37,7 +44,7 @@ r = l-l(1)+d;
 
 %% Calculate differential cross section
 
-difcs = gradient(arrayfun(@(ii) Sigpar(Z,ii,'M45',E0,beta)/10^-24, r(1:247)));
+difcs = gradient(arrayfun(@(ii) Sigpar(Z,ii,'M45',E0,beta(ii))/10^-24, r(1:247)));
 
 %% Extrapolate from 247 points to end of spectrum (1024 or 2048 pixels)
 

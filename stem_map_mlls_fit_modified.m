@@ -1,4 +1,4 @@
-function [p, R2, fun, back] = stem_map_mlls_fit_modified(EELS, rows, columns, model_begin_channel, model_end_channel, Diff_cross_sections, Optional_EELZ_low_loss)
+function [p, R2, fun, back] = stem_map_mlls_fit_modified(EELS, model_begin_channel, model_end_channel, Diff_cross_sections, Optional_EELZ_low_loss)
 %%
 
 
@@ -21,11 +21,11 @@ e = model_end_channel;
 dfc = Diff_cross_sections;
 
 %% stem mlls fit
-p = ones(rows,columns,size(dfc,2)+3);
-back = ones(rows,columns,length(l));
+p = ones(EELS.SI_x,EELS.SI_y,size(dfc,2)+3);
+back = ones(EELS.SI_x,EELS.SI_y,length(l));
 tic;
-for ii = rows:-1:1
-    for jj = columns:-1:1
+for ii = EELS.SI_x:-1:1
+    for jj = EELS.SI_y:-1:1
         [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit_modified(S(ii,jj), l, b, e, dfc, ll(ii,jj));
         fprintf('(%d,%d) pixel\n',ii,jj);
     end

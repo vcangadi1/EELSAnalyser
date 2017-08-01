@@ -1,4 +1,4 @@
-function Concor2(alpha,beta,e,e0)
+function [f1, f2, bstar] = Concor2(alpha,beta,e,e0)
 %     CONCOR2: EVALUATION OF CONVERGENCE CORRECTION F USING THE
 %     FORMULAE OF SCHEINFEIN AND ISAACSON (SEM/1984, PP.1685-6).
 %     FOR ABSOLUTE QUANTITATION, DIVIDE THE AREAL DENSITY BY F2.
@@ -9,7 +9,7 @@ function Concor2(alpha,beta,e,e0)
 % Details in R.F.Egerton: EELS in the Electron Microscope, 3rd edition, Springer 2011
 
 
-fprintf(1,'\n---------------Concor2--------------\n\n');
+%fprintf(1,'\n---------------Concor2--------------\n\n');
 if(nargin~=4)
     fprintf('Alternate Usage: Concor2(alpha,beta,E,E0)\n\n');
     
@@ -20,11 +20,11 @@ if(nargin~=4)
 %fprintf(1,'++++++++++++++++++++\n');
 
 else
-    fprintf('Alpha (mrad) : %g\n',alpha);
-    fprintf('Beta (mrad) : %g\n',beta);
-    fprintf('E (eV) : %g\n',e);
-    fprintf('E0 (keV) : %g\n',e0);
-end;
+    %fprintf('Alpha (mrad) : %g\n',alpha);
+    %fprintf('Beta (mrad) : %g\n',beta);
+    %fprintf('E (eV) : %g\n',e);
+    %fprintf('E0 (keV) : %g\n',e0);
+end
 
 tgt=e0.*(1.+e0./1022.)./(1.+e0./511.);
 thetae=(e+1e-6)./tgt; % avoid NaN for e=0
@@ -40,9 +40,9 @@ f1=(eta1+eta2+eta3)./2./a2./log(1.+b2./t2);
 f2=f1;
 if(alpha./beta>1)
     f2=f1.*a2./b2;
-end;
+end
 bstar=thetae.*sqrt(exp(f2.*log(1.+b2./t2))-1.);
-fprintf(1,'\nf1 %g f2 %g bstar %g\n',f1,f2,bstar);
+%fprintf(1,'\nf1 %g f2 %g bstar %g\n',f1,f2,bstar);
 
 end
 
