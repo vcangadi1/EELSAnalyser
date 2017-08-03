@@ -1,4 +1,4 @@
-function [p, R2, fun, back] = mlls_fit_modified(core_loss_spectrum, energy_loss_HIGH_LOSS, model_begin_channel, model_end_channel, Diff_cross_sections, Fit_Type, Optional_lowloss_spectrum)
+function [p, R2, fun, back] = mlls_fit_modified(core_loss_spectrum, energy_loss_HIGH_LOSS, model_begin_channel, model_end_channel, Diff_cross_sections, Fit_Type Optional_lowloss_spectrum)
 %%
 
 dfc = Diff_cross_sections;
@@ -18,11 +18,7 @@ S = core_loss_spectrum;
 % model background with exponential function
 b = model_begin_channel;
 e = model_end_channel;
-if e-b+1 > 100 && b < length(l)*0.25
-    back = feval(Power_law(l(b:e),S(b:e)),l);
-else
-    back = feval(Exponential_fit(l(b:e),S(b:e)),l);
-end
+back = feval(Exponential_fit(l(b:e),S(b:e)),l);
 
 %%
 

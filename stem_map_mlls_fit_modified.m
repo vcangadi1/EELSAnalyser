@@ -38,7 +38,7 @@ if nargin < 6
     tic;
     for ii = EELS.SI_x:-1:1
         for jj = EELS.SI_y:-1:1
-            [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit_modified(S(ii,jj), l, b, e, dfc);
+            [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit_modified(S(ii,jj), l, b, e, dfc, Fit_Type);
             fprintf('(%d,%d) pixel\n',ii,jj);
         end
     end
@@ -48,7 +48,7 @@ else
     tic;
     for ii = EELS.SI_x:-1:1
         for jj = EELS.SI_y:-1:1
-            [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit_modified(S(ii,jj), l, b, e, dfc, ll(ii,jj));
+            [p(ii,jj,:), R2(ii,jj), ~, back(ii,jj,:)] = mlls_fit_modified(S(ii,jj), l, b, e, dfc, Fit_Type, ll(ii,jj));
             fprintf('(%d,%d) pixel\n',ii,jj);
         end
     end

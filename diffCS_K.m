@@ -54,6 +54,6 @@ if onset_ch+25 <= length(l)
     dcs(onset_ch+20:end) = hampel(dcs(onset_ch+20:end),13);
 end
 
-if onset_ch+55 <= length(l)
-    dcs(onset_ch+50:end) = feval(Exponential_fit(l(onset_ch+50:end),dcs(onset_ch+50:end),'exp2'),l(onset_ch+50:end));
+if onset_ch+150 <= length(l)
+    dcs(onset_ch+50:end) = feval(Exponential_fit(l(onset_ch+50:onset_ch+100),dcs(onset_ch+50:onset_ch+100),'exp1'),l(onset_ch+50:end));
 end

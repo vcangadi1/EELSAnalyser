@@ -1,4 +1,5 @@
 clc
+
 %% Solar cell
 EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/EELS Spectrum Image disp1offset950time2s.dm3');
 EELS = change_dimension(EELS,90,43);
