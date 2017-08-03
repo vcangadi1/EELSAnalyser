@@ -2,7 +2,7 @@ function [edge] = edgedetect(strt,stp,ang)
 
 edge = 0;
 tc = 0;
-for m=strt:stp,
+for m=strt:stp
     if(ang(m)>0)
         tc = tc + 1;
     end

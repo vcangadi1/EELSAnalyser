@@ -1,4 +1,4 @@
-function X=SNR(s,n);
+function X=SNR(s,n)
 
 % Calcula la relacion senial a ruido en dB
 %  	X=SNR(s,n);

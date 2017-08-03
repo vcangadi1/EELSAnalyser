@@ -22,7 +22,7 @@ function [eels_edges, EELS_snr] = findedge_cluster(EELS, w)
 
 %plotEELS(EELS);
 if nargin < 2
-    w = 20;
+    w = 0;
 end
 
 EELS_snr = zeros(EELS.SI_x,EELS.SI_y);
