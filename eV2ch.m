@@ -17,5 +17,10 @@ if isrow(energy_loss_axis)
     energy_loss_axis = energy_loss_axis';
 end
 
+if eV < energy_loss_axis(1)
+    error('eV is BELOW the range of energy axis');
+elseif eV > energy_loss_axis(end)
+    error('eV is ABOVE the range of energy axis');
+end
 
 [~,ch] = min(abs(energy_loss_axis - eV), [], dim);

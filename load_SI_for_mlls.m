@@ -16,5 +16,5 @@ dfcGa = diffCS_L23(31,1115,197,bstar,l);
 dfcAs = diffCS_L23(33,1323,197,bstar,l);
 Diff_cross_sections = [dfcCu, dfcGa, dfcAs];
 
-model_begin_channel = eV2ch(l,1);
+model_begin_channel = 1;
 model_end_channel = eV2ch(l,929);

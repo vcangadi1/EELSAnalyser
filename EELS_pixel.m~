@@ -39,9 +39,7 @@ if nargin < 3
     BW = roipoly;
 end
 
-if size(BW,1) ~= size(Image,1) && size(BW,2) ~= size(Image,2)
-    error('Size of BW and Image must be same');
-end
+if size(
 
 %% Normalized sum pixel
 % All the spectrum that fall withing the mask ROI will be added up and
