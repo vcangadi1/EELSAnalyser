@@ -50,27 +50,42 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 switch Option
     case {'avg','Avg','average','mean'}
-        pixel = sum(sum(Image.*BW))./numel(BW(BW>0));
-        fprintf('Mean = %f\n',pixel);
+        pix = sum(sum(Image.*BW))./numel(BW(BW>0));
+        if nargout > 0
+            pixel = pix;
+        end
+        fprintf('Mean = %f\n',pix);
     case {'std'}
         p = Image.*BW;
         p = p(p~=0);
-        pixel = std(p(:));
-        fprintf('Std = %f\n',pixel);
+        pix = std(p(:));
+        if nargout > 0
+            pixel = pix;
+        end
+        fprintf('Std = %f\n',pix);
     case {'sum','Sum','Summation'}
-        pixel = sum(sum(Image.*BW));
-        fprintf('Sum = %f\n',pixel);
+        pix = sum(sum(Image.*BW));
+        if nargout > 0
+            pixel = pix;
+        end
+        fprintf('Sum = %f\n',pix);
     case {'med','median','Median'}
         p = Image.*BW;
         p = p(p~=0);
-        pixel = median(p(:));
-        fprintf('Median = %f\n',pixel);
+        pix = median(p(:));
+        if nargout > 0
+            pixel = pix;
+        end
+        fprintf('Median = %f\n',pix);
     case {'stat','stats'}
-        pixel(1) = sum(sum(Image.*BW))./numel(BW(BW>0));
+        pix(1) = sum(sum(Image.*BW))./numel(BW(BW>0));
         p = Image.*BW;
         p = p(p~=0);
-        pixel(2) = std(p(:));
-        fprintf('Mean = %f\t Std = %f\n',pixel(1),pixel(2));
+        pix(2) = std(p(:));
+        if nargout > 0
+            pixel(:) = pix(:);
+        end
+        fprintf('Mean = %f\t Std = %f\n',pix(1),pix(2));
 end
 
 %%
