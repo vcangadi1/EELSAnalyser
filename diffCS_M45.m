@@ -44,12 +44,14 @@ r = l-l(1)+d;
 
 %% Calculate differential cross section
 
-difcs = gradient(arrayfun(@(ii) Sigpar(Z,ii,'M45',E0,beta(ii))/10^-24, r(1:247)));
+%difcs = gradient(arrayfun(@(ii) Sigpar(Z,r(ii),'M45',E0,beta(ii))/10^-24, (1:247)'));
+difcs = diff(arrayfun(@(ii) Sigpar(Z,r(ii),'M45',E0,beta(ii))/10^-24, (1:247)'));
+
 
 %% Extrapolate from 247 points to end of spectrum (1024 or 2048 pixels)
 
-x = r(247-100:247);
-y = difcs(247-100:247);
+x = r(247-100:246);
+y = difcs(247-100:246);
 
 switch Extrapolate_Option
     case {'Exp','exp','Exponential','exponential'}
@@ -62,7 +64,7 @@ switch Extrapolate_Option
         Extraplt = (Exp+Pow)/2;
 end
 
-difcs = [difcs(1:247);Extraplt];
+difcs = [difcs(1:246);Extraplt];
 
 %% Arrange the core-loss to be at the edge onset
 

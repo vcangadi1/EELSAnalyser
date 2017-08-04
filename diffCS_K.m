@@ -40,8 +40,8 @@ rng = l-l(1)+d;
 
 %% Calculate differential cross section
 cs = arrayfun(@(ii) Sigmak3(Z,Edge_onset_eV,rng(ii),E0,Beta(ii)), (1:length(rng))');
-%difcs = diff(cs);
-difcs = diff(arrayfun(@(ii) Sigmak3(Z,Edge_onset_eV,rng(ii),E0,Beta(ii)), (1:length(rng))'));
+difcs = diff(cs);
+%difcs = diff(arrayfun(@(ii) Sigmak3(Z,Edge_onset_eV,rng(ii),E0,Beta(ii)), (1:length(rng))'));
 
 
 %% Arrange the core-loss to be at the edge onset
