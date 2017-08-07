@@ -31,7 +31,8 @@ if size(Zn)~=size(pE)
 end
 
 %%
-rE = deconvlucy(pE, Zn, iterations);
+rE = deconvlucy([pE;flipud(pE)], Zn, iterations);
+rE = rE(1:end/2);
 
 %% Plot
 %{

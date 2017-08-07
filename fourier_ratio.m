@@ -17,9 +17,13 @@ pE = core_loss_data(:,2);
 
 if Sigma > 0
     R = normpdf(lcor,lcor(floor(length(lcor)/2)),Sigma);
-    rE = ifft(fft(R).*fft(pE)./fft(Zn));
+    R = R/sum(R(:));
+    rE = ifft(fft(R/sum(R(:))).*fft(pE)./fft(Zn));
+    %rE = ifft(fft([R/sum(R(:));flipud(R/sum(R(:)))]).*fft([pE;flipud(pE)])./fft([Zn;flipud(Zn)]));
 elseif Sigma == 0
     rE = fftshift(ifft(fft(pE)./fft(Zn)));
+    %rE = fftshift(ifft(fft([pE;flipud(pE)],2048)./fft([Zn;flipud(Zn)],2048),2048));
+    %rE = real(rE(1:end/2));
 end
 
 %% Remove ringing effect
