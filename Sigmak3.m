@@ -44,7 +44,7 @@ sigma = 0;
 dsbdep = 0;
 dfprev = 0;
 %fprintf(1,'\nE(eV)    ds/dE(barn/eV)  Delta(eV)   Sigma(barn)     f(0)\n');
-for  j=1:30;
+for  j=1:30
     qa021 = e^2/(4*r*t) + e^3/(8*r*t^2*gg^3);
     pp2 = p02 - e/r*(gg-e/1022120);
     qa02m = qa021 + 4*sqrt(p02*pp2)*(sin(b/2))^2;

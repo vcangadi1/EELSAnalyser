@@ -1,4 +1,4 @@
-%{
+
 function result = RL_deconv(image, PSF, iterations)
     % to utilise the conv2 function we must make sure the inputs are double
     image = double(image);
@@ -31,6 +31,7 @@ for i=1:iterations
 end
 result = abs(fn); 
 %}
+%{
     function latent_est = RL_deconv(observed, psf, iterations)
     % to utilise the conv2 function we must make sure the inputs are double
     observed = double(observed);
@@ -46,4 +47,4 @@ result = abs(fn);
         error_est     = conv2(relative_blur,psf_hat,'same'); 
         latent_est    = latent_est.* error_est;
     end
-    
+%}

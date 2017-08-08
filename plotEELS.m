@@ -134,7 +134,7 @@ elseif nargin<3
         e_loss = varargin{1};
         spectrum = varargin{2};
         h = plot(e_loss,spectrum,...
-            'LineWidth',1);
+            'LineWidth',2);
         ax = gca;
         ax.FontWeight = 'bold';
         ax.FontSize = 10;

@@ -6,7 +6,7 @@ load('Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp0.2off
 
 llow = EELS.energy_loss_axis';
 %Z = EELS_sum_spectrum(EELS);
-Z = normpdf(llow,0,3);
+Z = normpdf(llow,0,4);
 
 Zn = Z/sum(Z);
 
@@ -14,6 +14,8 @@ lcor = llow + 200;
 
 E = create_ionization_edge(200,100,0.01,lcor);
 
+%Zn = low_loss(llow,20,0,1,0);
+%Zn = low_loss(llow,20,10,1,4);
 pE = plural_scattering(E,Zn);
 
 %%
@@ -25,18 +27,19 @@ res = rE;
 
 vidObj = VideoWriter('myPeaks_residue.avi');
 vidObj.Quality = 75;
-vidObj.FrameRate = 50;
+vidObj.FrameRate = 20;
 open(vidObj);
 locs = zeros(1000,length(A));
 pks = locs;
 loops = length(A);
 F(loops) = struct('cdata',[],'colormap',[]);
-for i = 1:loops,
+for i = 1:loops
     rE(:,i) = lucy_richardson([llow,Zn],[lcor,pE],A(i));
     hold on
     plotEELS(lcor,E)
-    res(:,i) = E-rE(:,i);
+    res(:,i) = rE(:,i)-E;
     %plotEELS(lcor,res(:,i))
+    plotEELS(lcor,rE(:,i))
     %ylim([-50 50])
     grid on
     grid minor
@@ -46,7 +49,7 @@ for i = 1:loops,
     writeVideo(vidObj, getframe(gcf));
     hold off
     %
-    close all
+    clf
     %
     set(gca,'nextplot','replacechildren');
     
@@ -61,24 +64,26 @@ close(vidObj);
 
 fig = figure;
 n = [10 1:loops];
-movie(fig,F,n,12)
+%movie(fig,F,n,1)
 
 
 %res = rE-repmat(E,1,loops);
 %%
-%{
+
 yyaxis left
 hold on
-plot(A,locs(1,:))
-plot(A,locs(2,:))
-plot(A,locs(3,:))
-plot(A,locs(4,:))
+p1 = plot(A,locs(1,:),'LineWidth',2);
+p2 = plot(A,locs(2,:),'LineWidth',2);
+p3 = plot(A,locs(3,:),'LineWidth',2);
+p4 = plot(A,locs(4,:),'LineWidth',2);
+legend([p1 p2 p3 p4],'1st artefact','2nd artefact','3rd artefact','4th artefact')
 yyaxis right
 hold on
-p1 = plot(A,pks(1,:));
-p2 = plot(A,pks(2,:));
-p3 = plot(A,pks(3,:));
-p4 = plot(A,pks(4,:));
-
+p1 = plot(A,pks(1,:),'LineWidth',2);
+p2 = plot(A,pks(2,:),'LineWidth',2);
+p3 = plot(A,pks(3,:),'LineWidth',2);
+p4 = plot(A,pks(4,:),'LineWidth',2);
+grid on
+grid minor
 legend([p1 p2 p3 p4],'1st artefact','2nd artefact','3rd artefact','4th artefact')
 %}
