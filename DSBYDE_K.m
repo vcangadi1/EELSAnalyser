@@ -1,4 +1,4 @@
-function [CS,dsbyde] = Sigmak3( z,ek,delta1,e0,beta )
+function [CS,dsbyde] = DSBYDE_K( z,ek,delta1,e0,beta )
 %     SIGMAK3 :  CALCULATION OF K-SHELL IONIZATION CROSS SECTIONS
 %     USING RELATIVISTIC KINEMATICS AND A HYDROGENIC MODEL WITH
 %     INNER-SHELL SCREENING CONSTANT OF 0.5 (last update: 01 May 2010)
@@ -29,7 +29,7 @@ else
     %fprintf('Incident-electron energy E0(keV) : %g\n',e0);
     %fprintf('Collection semi-angle Beta(mrad) : %g\n',beta);
 end
-einc = delta1./10;
+einc = delta1/10;
 
 r=13.606;
 e = ek;
@@ -44,7 +44,7 @@ sigma = 0;
 dsbdep = 0;
 dfprev = 0;
 %fprintf(1,'\nE(eV)    ds/dE(barn/eV)  Delta(eV)   Sigma(barn)     f(0)\n');
-for  j=1:30
+%for  j=1:30
     qa021 = e^2/(4*r*t) + e^3/(8*r*t^2*gg^3);
     pp2 = p02 - e/r*(gg-e/1022120);
     qa02m = qa021 + 4*sqrt(p02*pp2)*(sin(b/2))^2;
@@ -53,32 +53,34 @@ for  j=1:30
     dsbyde = 3.5166e8*(r/t)*(r/e) * integral(@(x)gosfunc(e,exp(x),z),log(qa021),log(qa02m));
     dfdipl = gosfunc(e,qa021,z); %dipole value
     delta = e - ek;
-    if(j ~= 1)
-        s = log(dsbdep/dsbyde)/log(e/(e-einc));
-        sginc =(e*dsbyde-(e-einc)*dsbdep)/(1-s);
+    %if(j ~= 1)
+        %s = log(dsbdep/dsbyde)/log(e/(e-einc));
+        %sginc =(e*dsbyde-(e-einc)*dsbdep)/(1-s);
+        sginc =(e*dsbyde-(e-einc)*dsbyde)/(1-0);
+        
         sigma = sigma + sginc; % barn/atom
         f=f+(dfdipl+dfprev)/2*einc;
-    end;
+    %end;
     %fprintf(1,'%4g %17.6f %10d %13.2f %8.4f\n', e,dsbyde,delta,sigma,f);
-    if(round(delta,1) == round(delta1,1))
+    %if(round(delta,1) == round(delta1,1))
         CS = sigma;
-    end
+    %end
     if(einc == 0)
-        return;
+        %return;
     end;
     if(delta >= delta1)
         if(sginc < 0.001*sigma)
-            break;
+            %break;
         end;
         einc = einc*2;
     end;
     e = e + einc;
     if(e > t)
-        break;
+        %break;
     end;
     dfprev = dfdipl;
     dsbdep = dsbyde;
-end
+%end
 
 function out = gosfunc(E , qa02, z)
 % gosfunc calculates (=DF/DE) which IS PER EV AND PER ATOM

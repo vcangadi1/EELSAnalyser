@@ -53,6 +53,8 @@ function plt_EELS_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to plt_EELS (see VARARGIN)
 
+cla;
+
 % Enter the input to handles.EELS
 if(length(varargin)<1)
     handles.EELS = readEELSdata;
