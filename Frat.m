@@ -133,7 +133,6 @@ psdnn = cpout';
 psd = psdnn(1:size(core_loss_data,1));
 
 d = conj(fft(d,nn));
-c
 c = conj(fft(c,nn));
 
 %     Process the Fourier coefficients:

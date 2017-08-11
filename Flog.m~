@@ -1,5 +1,5 @@
 %function Flog(infile,fwhm2)
-function dout = Flog(core_loss_data,fwhm2)
+function Flog(core_loss_data,fwhm2)
 %     FOURIER-LOG DECONVOLUTION USING EXACT METHODS (A) OR (B)
 %     Single-scattering distribution is written to the file FLOG.DAT
 %
@@ -122,7 +122,6 @@ xlabel('Energy Loss [eV]');
 ylabel('Count/channel');
 hold off;
 
-dout = dout(1:end/2);
 end
 
 function lm = findLocalMax(in,window)

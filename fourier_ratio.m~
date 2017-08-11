@@ -8,9 +8,13 @@ end
 
 Z = low_loss_data(:,2)/sum(low_loss_data(:,2));
 
+
 Zn = ifftshift(shift_zlp(Z,llow));
+Zn = [Zn;flipud(Zn)];
+
 
 lcor = core_loss_data(:,1);
+lcor = lcor(1):1/diff(lcor)
 
 pE = core_loss_data(:,2);
 

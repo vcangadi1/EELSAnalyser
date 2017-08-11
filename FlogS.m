@@ -1,4 +1,5 @@
-function FlogS(infile,fwhm2)
+%function FlogS(infile,fwhm2)
+function dout = FlogS(core_loss_data,fwhm2)
 %     FOURIER-LOG DECONVOLUTION USING EXACT METHODS (A) OR (B) 
 %     Method for THICKER samples (t/lamda>pi) as described by Spence (1979)
 %     Details in Egerton: EELS in the EM, 2nd edn.(Plenum Press, 1996)
@@ -9,20 +10,22 @@ function FlogS(infile,fwhm2)
 fprintf(1,'\n----------------FlogS---------------\n\n');
 
 %Read spectrum from input file
-if(nargin < 1)
-    fprintf('Alternate Usage: FlogS(''Filename'',FWHM2)\n');
-    infile = input('Name of input file (e.g. SpecGen.psd) = ','s');
+%if(nargin < 1)
+%    fprintf('Alternate Usage: FlogS(''Filename'',FWHM2)\n');
+%    infile = input('Name of input file (e.g. SpecGen.psd) = ','s');
 %    nspec = input('Number of data points to be read [Enter 0 to read all data points] = ');
-else
-    fprintf('Name of input file = %s\n',infile);
-end
+%else
+%    fprintf('Name of input file = %s\n',infile);
+%end
 % if(nspec == 0)
 %     nspec = inf;
 % end;
 % fidin=fopen(infile);
 % data = fscanf(fidin,'%g %g',[2,inf]);
 % fclose(fidin);
-data = ReadData(infile,2);
+%data = ReadData(infile,2);
+
+data = core_loss_data;
 
 nd = length(data);
 e(1:nd) = data(:,1);
@@ -110,13 +113,13 @@ end
 d = 2.*fft(d,nn); %double result for thicker-sample method
 
 % Write data to flogs.ssd
-fidout=fopen('FlogS.ssd','w+');
+%fidout=fopen('FlogS.ssd','w+');
 %eout = epc.*[nz:nn-1+nz];
 eout = epc.*[nz:nn/2-1+nz];
 %dout = real(d);
 dout = real(d(1:nn/2));
-fprintf(fidout,'%8.15g %8.15g \n',[eout;dout]);
-fclose(fidout);
+%fprintf(fidout,'%8.15g %8.15g \n',[eout;dout]);
+%fclose(fidout);
 
 %Plot
 figure;
