@@ -1,4 +1,4 @@
-function [ssd,psd] = Frat(low_loss_data,fwhm2,core_loss_data)
+function [csout,cpout] = Frat(low_loss_data,fwhm2,core_loss_data)
 %     FOURIER-RATIO DECONVOLUTION USING EXACT METHOD (A)
 %     WITH LEFT SHIFT BEFORE FORWARD TRANSFORM.
 %     RECONVOLUTION FUNCTION R(F) IS EXP(-X*X) .
@@ -9,16 +9,16 @@ function [ssd,psd] = Frat(low_loss_data,fwhm2,core_loss_data)
 
 %fprintf(1,'\n----------------Frat---------------\n\n');
 % get input data if not already provided in function parameters
-%if(nargin < 1)
-%    fprintf('Alternate Usage: frat(''LLFile'',fwhm,''CLFile'')\n\n');
+if(nargin < 1)
+    fprintf('Alternate Usage: frat(''LLFile'',fwhm,''CLFile'')\n\n');
 
-%    lfile = input ('Name of low-loss file (e.g. CoreGen.low) = ','s');
+    low_loss_data = input ('Name of low-loss file (e.g. CoreGen.low) = ','s');
 %    nread = input('Number of low-loss channels [Enter 0 to read all
 %    Channels] = ');
 %else
 %    fprintf('Name of low-loss file = %s\n',lfile);
     
-%end;
+end;
 %if(nread == 0)
 %    nread = inf;
 %end;
@@ -50,12 +50,12 @@ back = back + sum(lldata(1:5))/5;
 nz = find(lldata==max(lldata),1,'first');
 
 %     Find minimum in J(E)/E to estimate zero-loss sum A0:
-for i=nz:nd
+for i=nz:nd;
     if(lldata(i+1)/(i-nz+1)>lldata(i)/(i-nz))
         break;
-    end
+    end;
     nsep=i;
-end
+end;
 sum_nsep = sum(lldata(1:nsep));
 a0 = sum_nsep - back*(nsep);
 nfin = nd-nz+1;
@@ -69,8 +69,8 @@ a2 = sum(d(nfin-4:nfin));
 r = 2*log((a1+0.2)/(a2+0.1))/log((nd-nz)/(nd-nz-10));
 dend = d(nfin)*((nfin-1)/(nn-2-nz))^r;
 
-cosb = 0.5 - 0.5.*cos(pi.*(0:nn-nfin)./(nn-nfin-nz-1));
-d(nfin:nn)= d(nfin).*((nfin-1)./(nfin-1:nn-1)).^r - cosb.*dend; 
+cosb = 0.5 - 0.5.*cos(pi.*[0:nn-nfin]./(nn-nfin-nz-1));
+d(nfin:nn)= d(nfin).*((nfin-1)./[nfin-1:nn-1]).^r - cosb.*dend; 
 
 %     Compute total area:
 at = sum(d(1:nn)); %This may be needed when calculating 'gauss'
@@ -79,23 +79,22 @@ at = sum(d(1:nn)); %This may be needed when calculating 'gauss'
 
 d(nn+2-nz:nn) = lldata(1:nz-1) - back;
 
-%{
 fprintf(1,'ND,NZ,NSEP,DATA(NZ): \n');
 fprintf(1,'%g %g %g %g\n', nd,nz,nsep,lldata(nz));
 fprintf(1,'BACK,A0,DEND,EPC: \n');
 fprintf(1,'%g %g %g %g\n',back,a0,dend,epc);
 fwhm1=0.9394*a0/d(1)*epc;
 fprintf(1,' zero-loss FWHM = %4.1f eV; \n\n',fwhm1);
-%}
+
 % get input data if not already provided in function parameters
-%if(nargin < 3)
-%    fwhm2 = input(' energy resolution of coreloss SSD (e.g. FWHM above) = ');
-%    cfile = input('Name of coreloss file (e.g. CoreGen.cor) = ','s');
+if(nargin < 3)
+    fwhm2 = input(' energy resolution of coreloss SSD (e.g. FWHM above) = ');
+    core_loss_data = input('Name of coreloss file (e.g. CoreGen.cor) = ','s');
 %    nc = input('Number of coreloss channels [Enter 0 to read ALL channels] = ');
 %else
 %    fprintf('Energy resolution of coreloss SSD (FWHM) = %g\n',fwhm2);
 %    fprintf('Name of coreloss file = %s\n',cfile);
-%end
+end
 % if(nc == 0)
 %     nc = inf;
 % end;
@@ -105,7 +104,7 @@ fwhm2=fwhm2/epc;
 % fidin=fopen(cfile);
 % data = fscanf(fidin,'%g%*c %g',[2,nc]);
 % fclose(fidin);
-%data = ReadData(cfile,2);
+%data = ReadData(core_loss_data,2);
 data = core_loss_data;
 nc = length(data);
 
@@ -124,13 +123,10 @@ c(nc:nn)= a2./5.*(e(nc-2)./(e(1)+epc.*([nc-3:nn-3]))).^r - cosb.*cend;
 
 %     WRITE background-stripped CORE PLURAL SCATTERING DISTRIBUTION TO frat-psd.dat:
 %fidout=fopen('Frat.psd','w');
-eout = e(1)+epc.*(-1:nn-2);
+eout = e(1)+epc.*[-1:nn-2];
 cpout = real(c(1:nn));
 %fprintf(fidout,'%8.15g %8.15g \n',[eout;cpout]);
 %fclose(fidout);
-
-psdnn = cpout';
-psd = psdnn(1:size(core_loss_data,1));
 
 d = conj(fft(d,nn));
 c = conj(fft(c,nn));
@@ -158,10 +154,8 @@ csout = real(d(1:nn));
 %fprintf(fidout,'%8.15g %8.15g \n',[eout;csout]);
 %fclose(fidout);
 
-ssd = csout'*sum(psdnn)/sum(csout);
-ssd = ssd(1:size(core_loss_data,1));
-
 %{
+
 %Plot
 figure;
 plot(eout,csout,'r');
@@ -172,5 +166,28 @@ title('Frat Output','FontSize',12);
 xlabel('Energy Loss [eV]');
 ylabel('Count');
 hold off;
-end
 %}
+
+csout = csout(1:length(core_loss_data))./sum(csout(1:length(core_loss_data)));
+csout = csout .* sum(core_loss_data(:,2));
+
+cpout = cpout(1:length(core_loss_data));
+
+end
+
+function outdata = ReadData(infile,cols)
+% Reads in data file with predetermined number of columns
+% Inputs
+% infile: file name string
+% cols: number of columns the data is assumed to have.
+
+fidin=fopen(infile);
+if(fidin == -1)
+    error(['Filename: ''',infile,''' could not be opened']);
+end
+fprintf('Data file ''%s'' is assumed to have %d columns\n',infile,cols);
+outdata = fscanf(fidin,'%g%*c',[cols,inf]);
+fclose(fidin);
+outdata = outdata.';
+
+end

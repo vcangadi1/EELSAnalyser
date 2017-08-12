@@ -60,7 +60,6 @@ dext = d(nfin)*((nfin-1)/(nn-2-nz))^r; % check (nfin-0.5) ??
 cosb = 0.5 - 0.5.*cos(pi.*[0:nn-nfin]./(nn-nfin-nz-1));
 d(nfin:nn)= d(nfin).*((nfin-1)./[nfin-1:nn-1]).^r - cosb.*dext; 
 
-
 %     COPY ZERO-LOSS PEAK AND SMOOTH RIGHT-HAND END:
 z(1:nsep2) = d(1:nsep2) - d(nsep2)./2 .* (1 - cos(pi./2.*[0:nsep2-1]./(nsep2-1)));
 z(nsep2:2*nsep2-1)=d(nsep2) ./2 .*(1-cos(pi./2.*[nsep2-1:-1:0]./(nsep2-1)));
@@ -84,6 +83,7 @@ else
 
 end
 
+
 % Compute Fourier transforms
 z = conj(fft(z,nn));
 d = conj(fft(d,nn));
@@ -91,6 +91,7 @@ d = conj(fft(d,nn));
 % Process the Fourier coefficients:
 d = d + 1e-10;
 z = z + 1e-10;
+
 dbyz = log(d./z)/nn; % /nn for correct scaling
 if (fwhm2==0) % use ZLP as reconvolution function
     d = z .* dbyz;

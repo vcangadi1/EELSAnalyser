@@ -4,7 +4,7 @@ function rEELS = change_dispersion(EELS, new_dispersion)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Input :
 %         EELS        - EELS structure
-%         byfactor    - expected dispersion / original dispersion
+%   new_dispersion    - expected dispersion
 % Output:
 %         rEELS       - resample EELS structure
 
