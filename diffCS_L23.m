@@ -41,7 +41,8 @@ rng = l-l(1)+d;
 %% Calculate differential cross section
 
 difcs = zeros(size(l));
-difcs(1:end-1) = diff(arrayfun(@(ii) Sigmal3(Atomic_Num,ii,E0,beta(ii)), rng));
+%difcs(1:end-1) = diff(arrayfun(@(ii) Sigmal3(Atomic_Num,ii,E0,beta(ii)), rng));
+difcs(1:end-1) = diff(arrayfun(@(ii) Sigmal3(Atomic_Num,rng(ii),E0,beta(ii)), (1:length(l))'));
 difcs(end) = difcs(end-1);
 
 %% Arrange the core-loss to be at the edge onset

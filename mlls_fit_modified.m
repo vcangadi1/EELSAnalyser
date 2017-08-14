@@ -1,4 +1,4 @@
-function [p, R2, fun, back] = mlls_fit_modified(core_loss_spectrum, energy_loss_HIGH_LOSS, model_begin_channel, model_end_channel, Diff_cross_sections, Fit_Type, Optional_lowloss_spectrum)
+function [p, R2, adjR2, fun, back] = mlls_fit_modified(core_loss_spectrum, energy_loss_HIGH_LOSS, model_begin_channel, model_end_channel, Diff_cross_sections, Fit_Type, Optional_lowloss_spectrum)
 %%
 
 dfc = Diff_cross_sections;
@@ -44,7 +44,7 @@ switch Fit_Type
         fun = @(p,l) [dfc,l,ones(length(l),1)] * p';
         options = optimoptions(@lsqcurvefit,'display','none');
         p = lsqcurvefit(fun,p0,l,rS,lb,ub,options);
-        R2 = rsquare(rS, fun(p,l));
+        [R2,adjR2] = rsquare(rS, fun(p,l),size(dfc,2)+1);
         toc;
         
         %% Redefine simpler function
@@ -75,7 +75,7 @@ switch Fit_Type
         fun = @(p,l) [back,dfc] * p';
         options = optimoptions(@lsqcurvefit,'display','none');
         p = lsqcurvefit(fun,p0,l,S,lb,ub,options);
-        R2 = rsquare(S, fun(p,l));
+        [R2,adjR2] = rsquare(S, fun(p,l),size(dfc,2)+1);
         toc;
         
         %% Redefine simpler function
@@ -107,7 +107,7 @@ switch Fit_Type
         fun = @(p,l) [back,dfc,l,ones(length(l),1)] * p';
         options = optimoptions(@lsqcurvefit,'display','none');
         p = lsqcurvefit(fun,p0,l,S,lb,ub,options);
-        R2 = rsquare(S, fun(p,l));
+        [R2,adjR2] = rsquare(S, fun(p,l),size(dfc,2)+2);
         toc;
         
         %% Redefine simpler function
@@ -131,15 +131,12 @@ switch Fit_Type
         fun = @(p,l) [back.*l.^p(1),dfc,l,ones(length(l),1)] * p(2:7)';
         options = optimoptions(@lsqcurvefit,'display','none');
         p = lsqcurvefit(fun,p0,l,S,lb,ub,options);
-        R2 = rsquare(S, fun(p,l));
+        [R2,adjR2] = rsquare(S, fun(p,l),size(dfc,2)+3);
         toc;
         
         %% Redefine simpler function
         fun = @(p) [back.*l.^p(1),dfc,l,ones(length(l),1)] * p(2:7)';
-        
-        
-        
-        %%
+       
         %
     case {'E','e'}
         %% E). Fit Spectrum with back,dfc,baseline
@@ -156,7 +153,7 @@ switch Fit_Type
         fun = @(p,l) [back.^p(1),dfc,l,ones(length(l),1)] * p(2:7)';
         options = optimoptions(@lsqcurvefit,'display','none');
         p = lsqcurvefit(fun,p0,l,S,lb,ub,options);
-        R2 = rsquare(S, fun(p,l));
+        [R2,adjR2] = rsquare(S, fun(p,l),size(dfc,2)+3);
         toc;
         
         %% Redefine simpler function
