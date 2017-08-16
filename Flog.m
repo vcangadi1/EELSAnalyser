@@ -78,7 +78,7 @@ if(nargin < 2)
 %    fwhm2 = input('Enter new FWHM or 0 to keep same ZLP: ');
     %fwev2 = input('Enter new FWHM or 0 to keep same ZLP: ');
     %fwhm2 = fwev2/epc;
-else
+%else
     fprintf('New FWHM (0 to keep same ZLP): %g\n',fwhm2);
 
 end

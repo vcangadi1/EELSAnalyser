@@ -2,10 +2,10 @@ function [zlp_shift,e_loss_shift] = shift_zlp(Z, e_loss, FilterOption)
 %%
 % Shift the ZLP to begining of the spectrum (channel 1) for deconvolution
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Input : 
+% Input :
 %            Z        - Zero-loss peak (low loss spectrum)
 %            e_loss   - axis that need to be calibrated to zero-loss peak
-% Output: 
+% Output:
 %         zlp_shift   - Zero-loss peak (low loss spectrum)
 %        e_loss_shift - calibrated energy-loss axis that has 0eV at ZLP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,9 +20,6 @@ if isrow(Z)
     Z = Z';
 end
 
-if isrow( e_loss )
-    e_loss = e_loss';
-end
 
 %% Window filtering to remove discontinuity in the spectrum
 % Filter
@@ -46,6 +43,17 @@ Zn = [Z(idx_zlp:end);Z(1:idx_zlp-1)];
 zlp_shift = Zn;
 
 %% Re-calibrate e_loss so that zlp has 0eV
-if nargout==2
-    e_loss_shift = calibrate_zero_loss_peak(e_loss,Zn);
+
+if nargin>1
+    if isempty(e_loss)
+        e_loss = 1:length(Zn);
+    end
+    if isrow( e_loss )
+        e_loss = e_loss';
+    end
+    if nargout==2
+        e_loss_shift = calibrate_zero_loss_peak(e_loss,Zn);
+    end
+else
+    e_loss_shift = [];
 end
