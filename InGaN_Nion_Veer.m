@@ -6,7 +6,7 @@ clear all
 EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/60kV/EELS Spectrum Image9-0.015eV-ch.dm3');
 
 %% calibrate zlp
-EELS = calibrate_zero_loss_peak(EELS);
+EELS = calibrate_zero_loss_peak(EELS,'gauss');
 
 
 %% Select 13eV to 30eV
@@ -59,8 +59,9 @@ for mm = EELS.SI_x:-1:1
             cInN = InGaN(1:708,end);
             cInGaN = InGaN(1:708,ii);
             cGaN = InGaN(1:708,1);
+            cl = l(1:708);
             
-            X = [pInN pInGaN pGaN cInN cInGaN cGaN];
+            X = [pInN pInGaN pGaN cInN cInGaN cGaN cl ones(708,1)];
             
             y = S(1:708);
             
@@ -79,8 +80,9 @@ for mm = EELS.SI_x:-1:1
         cInN = InGaN(1:708,end);
         cInGaN = InGaN(1:708,ind);
         cGaN = InGaN(1:708,1);
+        cl = l(1:708);
         
-        X = [pInN pInGaN pGaN cInN cInGaN cGaN];
+        X = [pInN pInGaN pGaN cInN cInGaN cGaN cl ones(708,1)];
         
         y = S(1:708);
         
@@ -91,19 +93,20 @@ for mm = EELS.SI_x:-1:1
       [~,ind] = max(r);
         
         pInN = Sp(1:708,end);
-       pInGaN = Sp(1:708,ind);
+        pInGaN = Sp(1:708,ind);
         pGaN = Sp(1:708,1);
         
         cInN = InGaN(1:708,end);
         cInGaN = InGaN(1:708,ind);
         cGaN = InGaN(1:708,1);
+        cl = l(1:708);
         
-     X = [ pInN pInGaN pGaN cInN cInGaN cGaN];
+       X = [pInN pInGaN pGaN cInN cInGaN cGaN cl ones(708,1)];
         
         y = S(1:708);
         
       b(mm,nn,:) = regress(y,X);
-      count = count -1;
+      count = count - 1;
       
       con_ind(mm,nn)=ind;
       end
@@ -118,10 +121,12 @@ for mm = EELS.SI_x:-1:1
       fcInN = InGaN(1:966,end);
         fcInGaN = InGaN(1:966,ind);
         fcGaN = InGaN(1:966,1);
-        tsum(mm,nn) = sum(fcInN)*b(mm,nn,4)+sum(fcGaN)*b(mm,nn,end)+sum(fcInGaN)*b(mm,nn,5);
+        tsum(mm,nn) = sum(fcInN)*b(mm,nn,4)+sum(fcGaN)*b(mm,nn,6)+sum(fcInGaN)*b(mm,nn,5);
        wcInGaN(mm,nn) = (sum(fcInGaN)*b(mm,nn,5))/tsum(mm,nn);
-        wcGaN(mm,nn) = (sum(fcGaN)*b(mm,nn,end))/tsum(mm,nn);
+        wcGaN(mm,nn) = (sum(fcGaN)*b(mm,nn,6))/tsum(mm,nn);
        wcInN(mm,nn) = (sum(fcInN)*b(mm,nn,4))/tsum(mm,nn);
+       
+       
         
         psum(mm,nn) = sum(fpInN)*b(mm,nn,1)+sum(fpGaN)*b(mm,nn,3)+sum(fpInGaN)*b(mm,nn,2);
        wpInGaN(mm,nn) = (sum(fpInGaN)*b(mm,nn,2))/psum(mm,nn);
@@ -144,19 +149,26 @@ plotEELS(best_rsq,'map');
 figure;
 subplot 321
 plotEELS(wcGaN,'map');
+title('weighted core-loss maps GaN')
 subplot 323
 plotEELS(wcInGaN,'map');
+title('weighted core-loss maps InGaN')
 subplot 325
 plotEELS(wcInN,'map');
+title('weighted core-loss maps InN')
 
 
 %% weighted plasmon maps
 subplot 322
 plotEELS(wpGaN,'map');
+title('weighted plasmon maps GaN')
 subplot 324
 plotEELS(wpInGaN,'map');
+title('weighted plasmon maps InGaN')
 subplot 326
 plotEELS(wpInN,'map');
+title('weighted plasmon maps InN')
+
 %% plot used InGaN for fitting
 figure;
 plotEELS(used_InGaN_con,'map');
