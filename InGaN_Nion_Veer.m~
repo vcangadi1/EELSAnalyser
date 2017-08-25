@@ -58,7 +58,7 @@ pInGaN = @(ii,jj,x) A.*lorentz(l(ii,jj), Ep(x), FWHM(x));
 %p = lsqcurvefit(fun,p0,l(3,59),S1,lb,ub,options);
 
 %%
-m = 10000;
+m = 1000;
 %X = @(ii,jj,xx) [pInGaN(ii,jj,0) pInGaN(ii,jj,xx/m) pInGaN(ii,jj,1) cInGaN(ii,jj,0) cInGaN(ii,jj,xx/m) cInGaN(ii,jj,1) l(ii,jj) ones(length(l(ii,jj)),1)];
 X = @(ii,jj,xx) [pInGaN(ii,jj,0) pInGaN(ii,jj,xx/m) pInGaN(ii,jj,1) cInGaN(ii,jj,0) cInGaN(ii,jj,xx/m) cInGaN(ii,jj,1)];
 
@@ -91,10 +91,10 @@ cor = @(ii,jj) polyval(f,c(ii,jj)/m);
 for ii = 30:-1:1
     for jj = 60:-1:1
         fprintf('(%d,%d) finished\n',ii,jj);
-        csum(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj) + sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj) + sum(cInGaN(ii,jj,1))*InNc(ii,jj);
+        csum(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj) + cor(ii,jj)*sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj) + cor(ii,jj)*sum(cInGaN(ii,jj,1))*InNc(ii,jj);
         wcGaN(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj)./csum(ii,jj);
-        wcInN(ii,jj) = cor(ii,jj).*sum(cInGaN(ii,jj,1))*InNc(ii,jj)./csum(ii,jj);
-        wcInGaN(ii,jj) = cor(ii,jj).*sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj)./csum(ii,jj);
+        wcInN(ii,jj) = cor(ii,jj)*sum(cInGaN(ii,jj,1))*InNc(ii,jj)./csum(ii,jj);
+        wcInGaN(ii,jj) = cor(ii,jj)*sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj)./csum(ii,jj);
         psum(ii,jj) = sum(pInGaN(ii,jj,0))*GaNp(ii,jj) + sum(pInGaN(ii,jj,c(ii,jj)/m))*InGaNp(ii,jj) + sum(pInGaN(ii,jj,1))*InNp(ii,jj);
         wpGaN(ii,jj) = sum(pInGaN(ii,jj,0))*GaNp(ii,jj)./psum(ii,jj);
         wpInN(ii,jj) = sum(pInGaN(ii,jj,1))*InNp(ii,jj)./psum(ii,jj);
@@ -105,9 +105,9 @@ end
 %%
 
 ii = 17;
-jj = 50;
+jj = 37;
 
-figure;
+
 plotEELS(l(ii,jj),S(ii,jj))
 plotEELS(l(ii,jj),squeeze(p(ii,jj,1:6,c(ii,jj)))'*X(ii,jj,c(ii,jj))')
 plotEELS(l(ii,jj),squeeze(p(ii,jj,1,c(ii,jj)))'*pInGaN(ii,jj,0)')

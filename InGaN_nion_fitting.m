@@ -6,7 +6,7 @@ clear all
 EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/60kV/EELS Spectrum Image9-0.015eV-ch.dm3');
 
 %% calibrate zlp
-EELS = calibrate_zero_loss_peak(EELS,'gauss');
+EELS = calibrate_zero_loss_peak(EELS);
 
 
 %% Select 13eV to 30eV

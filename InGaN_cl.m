@@ -8,7 +8,7 @@ l = energy_loss_axis;
 InGaN1 = InN(169:169+540-1)*x+GaN(437:437+540-1)*(1-x);
 
 %GaN onset is 23.8, But resdue begins at 19.53
-InGaN = [zeros(eV2ch(l,19.53-E_off.*x)-1,1); InGaN1];
+InGaN = [zeros(eV2ch(l,19.55-E_off.*x)-1,1); InGaN1];
 
 if length(InGaN) < length(energy_loss_axis)
     z = length(energy_loss_axis) - length(InGaN);
