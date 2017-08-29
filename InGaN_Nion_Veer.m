@@ -83,10 +83,14 @@ end
 toc;
 %%
 
-x_value = [1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0];
-correction_to_sum = [2.204065904 2.008173594 1.836564383 1.68407018 1.549137032 1.433339148 1.326518424 1.230818344 1.145418392 1.064222791 1];
-f = polyfit(x_value,correction_to_sum,2);
-cor = @(ii,jj) polyval(f,c(ii,jj)/m);
+%x_value = [1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0];
+%correction_to_sum = [2.204065904 2.008173594 1.836564383 1.68407018 1.549137032 1.433339148 1.326518424 1.230818344 1.145418392 1.064222791 1];
+%f = polyfit(x_value,correction_to_sum,2);
+%cor = @(ii,jj) polyval(f,c(ii,jj)/m);
+
+cor = @(ii,jj) In_cl_trunc_corr(c(ii,jj)/m);
+
+%%
 
 for ii = 30:-1:1
     for jj = 60:-1:1
@@ -104,8 +108,8 @@ end
 
 %%
 
-ii = 17;
-jj = 50;
+ii = 16;
+jj = 51;
 
 figure;
 plotEELS(l(ii,jj),S(ii,jj))
@@ -120,4 +124,3 @@ legend('Spectrum','Model','Plasmon GaN','Plasmon InGaN','Plasmon InN','Core-loss
 title(['x = ',num2str(c(ii,jj)/m)]);
 %plotEELS(l(ii,jj),p(7,c)'*l(ii,jj)')
 %plotEELS(l(ii,jj),p(8,c)'*ones(length(l(ii,jj)),1)')
-
