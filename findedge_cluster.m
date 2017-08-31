@@ -34,7 +34,7 @@ for m = EELS.SI_x:-1:1
         S = exp(medfilt1(log(abs(S)),10,'truncate'));
         
         EELS_snr(m,n) = snr(S,squeeze(EELS.SImage(m,n,:))-S);
-
+        
         %plot(EELS.energy_loss_axis,squeeze(EELS.SImage(m,n,:)));
         %hold on
         %plot(EELS.energy_loss_axis,S);
