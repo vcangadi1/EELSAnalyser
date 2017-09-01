@@ -1,7 +1,7 @@
 
 function [eels_edges, EELS_snr] = findedge_cluster(EELS, w)
 
-[Z,elname,eledge,edge_shape] = edge_database('edges_database.xlsx');
+[Z,elname,eledge,edge_shape] = edge_database('edges_database_1.xlsx',1,1,20);
 
 %poolobj = gcp('nocreate');
 %if(poolobj.NumWorkers<=0)
@@ -30,8 +30,16 @@ for m = EELS.SI_x:-1:1
     for n = EELS.SI_y:-1:1
         S = squeeze(EELS.SImage(m,n,:));
         %S = medfilt1(S,10,'truncate');
-        S = exp(medfilt1(log(abs(S)),10,'truncate'));
-        S = exp(medfilt1(log(abs(S)),10,'truncate'));
+        %S = exp(medfilt1(log(abs(S)),10,'truncate'));
+        %S = exp(medfilt1(log(abs(S)),10,'truncate'));
+        
+        %S = hampel(S,17);
+        
+        %cA = dwt(S,'sym4');
+        %ccA = dwt(cA,'sym4');
+        %rrcA = idwt(ccA,[],'sym4');
+        %S = idwt(rrcA,[],'sym4');
+        %S = S(1:end-2);
         
         EELS_snr(m,n) = snr(S,squeeze(EELS.SImage(m,n,:))-S);
         
@@ -46,7 +54,7 @@ for m = EELS.SI_x:-1:1
 
         ang(ang<0) = NaN;
 
-        parfor i = 1:length(S)-w
+        for i = 1:length(S)-w
             edge(i) = edgedetect(i,i+w,ang);
         end
         
