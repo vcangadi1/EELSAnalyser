@@ -32,13 +32,10 @@ Smean = nanmean(SS);
 Sstd = nanstd(SS);
 %}
 
-%clear all
 %EELS = readEELSdata;
-load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp1offset950time2s.mat'); EELS.SImage = EELS.SImage.*repmat(BW,1,1,1024);
-%EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/100kV/EELS Spectrum Image6-b.dm3');
+load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp1offset950time2s.mat')
 l = EELS.energy_loss_axis';
 
-%%
 w = 25;
 P = [];
 for ii = EELS.SI_x:-1:1
@@ -54,8 +51,4 @@ Ss(ii,jj,1:1024) = nanstd(SS);
 P = [P; locs];
 end
 end
-%%
-figure
 histogram(P)
-%%
-findpeaks(squeeze(mean(mean(Sm,2),1)),l,'MinPeakProminence',20,'Annotate','extents')
