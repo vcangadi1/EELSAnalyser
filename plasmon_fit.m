@@ -42,9 +42,8 @@ aprox_FWHM = 20;
 
 %% Calculate Lorentz function fitting range
 
-[~,lpos] = min(abs(l-(aprox_Ep-0.2*aprox_FWHM)));
-[~,rpos] = min(abs(l-(aprox_Ep+0.2*aprox_FWHM)));
-
+[~,lpos] = min(abs(l-(aprox_Ep-0.5*aprox_FWHM)));
+[~,rpos] = min(abs(l-(aprox_Ep+0.5*aprox_FWHM)));
 
 if lpos <= rpos && rpos - lpos + 1 < 3
     lpos = lpos - 1;

@@ -33,8 +33,8 @@ Sstd = nanstd(SS);
 %}
 
 clear all
-EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/100kV/EELS Spectrum Image7.dm3'); %Use this (SI 7) instead of 6-b InGaN highloss of Nion machine
-%load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp1offset950time2s.mat'); EELS.SImage = EELS.SImage.*repmat(BW,1,1,1024);
+%EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/100kV/EELS Spectrum Image7.dm3'); %Use this (SI 7) instead of 6-b InGaN highloss of Nion machine
+load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp1offset950time2s.mat'); %EELS.SImage = EELS.SImage.*repmat(BW,1,1,1024);
 %EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/100kV/EELS Spectrum Image6-b.dm3');
 l = EELS.energy_loss_axis;
 
