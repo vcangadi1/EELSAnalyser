@@ -20,9 +20,12 @@ lz = calibrate_zero_loss_peak(lz,Z,'gauss');
 W0 = zero_loss_fit(lz,Z);
 
 %%
-
+f = Power_law(l(1:260),S(1:260));
+a = f.a;
+r = -f.b;
 B = feval(Power_law(l(1:260),S(1:260)),l);
 
+%%
 dfcGa = diffCS_L23(31,1115,197,16.6,l);
 
 dfcAs = diffCS_L23(33,1323,197,16.6,l);
@@ -37,24 +40,27 @@ y = X*p;
 
 %%
 
-SNR = 100; %dB
+for ii = 0:1:6
+SNR = 20+(ii*5); %dB
 y = awgn(X*p,SNR,'measured');
 
-%S = exp(medfilt1(log(abs(y)),10,'truncate'));
-%S = exp(medfilt1(log(abs(S)),10,'truncate'));
+S = exp(medfilt1(log(abs(y)),10,'truncate'));
+y = exp(medfilt1(log(abs(S)),10,'truncate'));
 
-S = smooth(y,10);
-S = smooth(S,10);
+%S = smooth(y,10);
+%S = smooth(S,10);
 
-SS = hankel(atan(gradient(y)*180/pi));
+%SS = hankel(atan(gradient(y)*180/pi));
+SS = hankel(atan(gradient(y)./(a*l.^(-r)))*180/pi);
+
 SS = SS(1:25,:);
 
 Sm = nanmean(SS);
 Ss = nanstd(SS);
 
-figure;
-plotEELS(l,Sm)
-
+figure(4)
+plotEELS(l,Sm+ii*1.5)
+end
 %figure;
 %plotEELS(l,X*p)
 %plotEELS(l,y)

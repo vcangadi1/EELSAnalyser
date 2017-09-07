@@ -20,8 +20,12 @@ lz = calibrate_zero_loss_peak(lz,Z,'gauss');
 W0 = zero_loss_fit(lz,Z);
 
 %%
-
+f = Power_law(l(1:260),S(1:260))
+a = f.a;
+r = -f.b;
 B = feval(Power_law(l(1:260),S(1:260)),l);
+
+%%
 
 dfcGa = diffCS_L23(31,1115,197,16.6,l);
 
@@ -36,16 +40,21 @@ p = regress(S, X);
 y = X*p;
 
 %%
-w = 2;
 
-SS = hankel(atan(gradient(y)*180/pi));
+for ii = 1:1:7
+
+    w = 5*ii;
+
+%SS = hankel(atan(gradient(y)*180/pi))
+SS = hankel(atan(gradient(y)./(a*l.^(-r)))*180/pi);
 SS = SS(1:w,:);
 
 Sm = nanmean(SS);
 Ss = nanstd(SS);
 
-figure;
-plotEELS(l,Sm)
+%figure;
+plotEELS(l,Sm+ii-1)
+end
 
-figure;
-plotEELS(l,X*p)
+%figure;
+%plotEELS(l,X*p)

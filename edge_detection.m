@@ -26,44 +26,34 @@ r = -f.b;
 B = feval(Power_law(l(1:260),S(1:260)),l);
 
 %%
-dfcGa = diffCS_L23(31,1115,197,16.6,l);
+%dfcGa = diffCS_L23(31,1115,197,16.6,l);
 
-dfcAs = diffCS_L23(33,1323,197,16.6,l);
+%dfcAs = diffCS_L23(33,1323,197,16.6,l);
 
-dfc = [dfcGa, dfcAs];
+%dfc = [dfcGa, dfcAs];
 
-X = [B,dfcGa,dfcAs];
+%X = [B,dfcGa,dfcAs];
 
-p = regress(S, X);
+%p = regress(S, X);
+
+%y = X*p;
 
 %%
 
-%S = exp(medfilt1(log(abs(S)),10,'truncate'));
-%S = exp(medfilt1(log(abs(S)),10,'truncate'));
+S = exp(medfilt1(log(abs(S)),10,'truncate'));
+S = exp(medfilt1(log(abs(S)),10,'truncate'));
 
-for ii = 0:0.5:3
-    tl = 0.3*ii*2;
-    ll = low_loss(lz,Ep,Wp,tl,W0);
-    
-    pdfc = plural_scattering(dfc,ll);
-    
-    X = [B,pdfc];
-    
-    %SS = hankel(atan(gradient(X*p)*180/pi));
-    SS = hankel(atan(gradient(X*p)./(a*l.^(-r)))*180/pi);
-    SS = SS(1:25,:);
-    
-    Sm = nanmean(SS);
-    Ss = nanstd(SS);
-    
-    if tl >= 0.7
-        figure(2)
-        plotEELS(l+Ep,Sm+ii)
-    elseif tl >= 1.4
-        figure(2)
-        plotEELS(l+2*Ep,Sm+ii)
-    else
-        figure(2)
-        plotEELS(l,Sm+ii)
-    end
-end
+w = 25;
+
+SS = hankel(atan(gradient(S)./(a*l.^(-r)))*180/pi);
+%SS = hankel(atan(gradient(S)*180/pi));
+SS = SS(1:w,:);
+
+Sm = nanmean(SS);
+Ss = nanstd(SS);
+
+%figure;
+plotEELS(l,Sm)
+
+%figure;
+%plotEELS(l,X*p)
