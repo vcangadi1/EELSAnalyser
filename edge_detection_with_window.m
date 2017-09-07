@@ -56,5 +56,5 @@ Ss = nanstd(SS);
 plotEELS(l,Sm+ii-1)
 end
 
-%figure;
-%plotEELS(l,X*p)
+figure;
+plotEELS(l,Sm)

@@ -45,7 +45,7 @@ S = exp(medfilt1(log(abs(S)),10,'truncate'));
 
 w = 25;
 
-SS = hankel(atan(gradient(S)./(a*l.^(-r)))*180/pi);
+SS = hankel(atan(gradient(S)./(a*l.^(-r))));
 %SS = hankel(atan(gradient(S)*180/pi));
 SS = SS(1:w,:);
 
