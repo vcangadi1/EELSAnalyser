@@ -12,7 +12,7 @@ b = 1;
 e = 260;
 %}
 %% Load High loss InGaN
-%{
+
 EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/100kV/EELS Spectrum Image6-b.dm3');
 I = sum(EELS.SImage,3);
 BW = Ga_rich_InGaN(I);
@@ -21,9 +21,9 @@ S = squeeze(sum(sum(EELS.SImage.*repmat(BW,1,1,EELS.SI_z),2))/sum(BW(:)>0));
 l = EELS.energy_loss_axis;
 b = 1;
 e = 100;
-%}
-%% Load High loss AlN:Tb
 
+%% Load High loss AlN:Tb
+%{
 EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/AlNTb-P14-800degree/EELS Spectrum Image1.dm3');
 I = sum(EELS.SImage,3);
 BW = Si_region_AlN(I);
@@ -33,7 +33,7 @@ S = S(12:467);
 l = EELS.energy_loss_axis(12:467);
 b = 12;
 e = 29;
-
+%}
 %%
 %EELZ = load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp0.2offset0time0.1s.mat');
 %EELZ = EELZ.EELS;
