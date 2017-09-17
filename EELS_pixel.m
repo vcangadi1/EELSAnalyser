@@ -86,6 +86,15 @@ switch Option
             pixel(:) = pix(:);
         end
         fprintf('Mean = %f\t Std = %f\n',pix(1),pix(2));
+    case {'nanstat'}
+        pix(1) = nansum(nansum(Image.*BW))./numel(BW(BW>0));
+        p = Image.*BW;
+        p = p(p~=0);
+        pix(2) = nanstd(p(:));
+        if nargout > 0
+            pixel(:) = pix(:);
+        end
+        fprintf('Mean = %f\t Std = %f\n',pix(1),pix(2));
 end
 
 %%

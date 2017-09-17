@@ -45,6 +45,6 @@ parfor_progress(0);
 toc;
 
 % delete parallel pool object
-delete(poolobj);
+%delete(poolobj);
 
 plotIntervals(s, f, id, min(s)); % plotIntervals

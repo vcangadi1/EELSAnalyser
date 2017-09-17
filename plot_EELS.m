@@ -138,6 +138,8 @@ switch get(handles.output,'CurrentKey')
         handles.r = 1;
     case 'pagedown'
         handles.r = handles.EELS.SI_x;
+    case 'escape'
+        close_fig = 1;
     otherwise
         warning('Unexpected key pressed. Use only arrows, home, end, pageup & pagedown keys');
 end
@@ -163,6 +165,11 @@ handles = plt(handles); % Call plt_axes1 function
 
 % Update handles structure
 guidata(hObject, handles);
+
+% Close figure if escape is pressed
+if close_fig == 1
+    close(hObject);
+end
 
 %% --- Plot spectrum image and spectrum
 function handles = plt(handles)

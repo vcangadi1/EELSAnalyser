@@ -96,7 +96,8 @@ thebar=ebar/e0/(1+1/gamma);
 t2=thebar*thebar;
 gfunc=log(g2)-log((b2+t2)/(b2+t2/g2))-v2*b2/(b2+t2/g2);
 squab=log(1+b2/t2)+gfunc;
-sigma=1.3e-16*g2/(1+gamma)/ebar/e0*fd*squab;
+%sigma=1.3e-16*g2/(1+gamma)/ebar/e0*fd*squab;
+sigma=1.3e-16*g2/(1+gamma)/ebar/e0*fd*squab/10^-24;
 %fprintf('sigma = %0.3g cm^2; \n',sigma);
 if(~((beta^2)>(50*ec/e0)))
    %fprintf('estimated accuracy = %0.4g %% \n',erp);

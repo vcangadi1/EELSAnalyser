@@ -25,7 +25,7 @@ EELS.PCA.Variance = LATENT;
 EELS.PCA.Individual_Components = zeros(EELS.SI_x*EELS.SI_y,EELS.SI_x,EELS.SI_y,EELS.SI_z);
 
 
-for i = 1:EELS.SI_x*EELS.SI_y,
+for i = 1:EELS.SI_x*EELS.SI_y
     C=zeros(size(COEFF));
     C(:,i)=COEFF(:,i);
     %E(i,:,:)=(SCORE*C').*repmat(AStd,[z,1])+repmat(AMean,[z,1]);
