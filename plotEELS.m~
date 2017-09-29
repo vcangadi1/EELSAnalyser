@@ -16,7 +16,7 @@ if(nargin<2)
                     'Step size = ',num2str(sprintf('%.2f',EELS.scale.x)),EELS.scale.xunit,', ',...
                     'Mag = ',num2str(EELS.mag/1000),'k'],...
                     'FontWeight','bold',...
-                    'FontSize',14);
+                    'FontSize',10);
             else
                 title(['Image size = ',num2str(EELS.Image_x),' x ',num2str(EELS.Image_y),' pixel, ',...
                     'Step size = ',num2str(sprintf('%.2f',EELS.scale.x)),EELS.scale.xunit,', ',...
@@ -33,25 +33,25 @@ if(nargin<2)
         if((EELS.Image_y*EELS.scale.y > 1000) && strcmp(EELS.scale.yunit,'nm'))
             xlabel(['x-axis (',num2str(sprintf('%.2f',(EELS.Image_y*EELS.scale.y)/1000)),'\mum', ')'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
             plot_label_FOV(ax,(EELS.Image_y*EELS.scale.y)/1000,'micro',EELS.Image_x,EELS.Image_y);
         else
             xlabel(['x-axis (',num2str(sprintf('%.2f',EELS.Image_y*EELS.scale.y)),EELS.scale.yunit, ')'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
             plot_label_FOV(ax,EELS.Image_y*EELS.scale.y,EELS.scale.yunit,EELS.Image_x,EELS.Image_y);
         end
         if((EELS.Image_x*EELS.scale.x > 1000) && strcmp(EELS.scale.xunit,'nm'))
             ylabel(['y-axis (',num2str(sprintf('%.2f',(EELS.Image_x*EELS.scale.x)/1000)),'\mum', ')'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
         else
             ylabel(['y-axis (',num2str(sprintf('%.2f',EELS.Image_x*EELS.scale.x)),EELS.scale.xunit, ')'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
         end
         c = colorbar('FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         c.Label.String = 'Intensity';
         axis image
         
@@ -65,16 +65,16 @@ if(nargin<2)
             'LineWidth',2);
         title(['Dispersion = ',num2str(EELS.dispersion),'eV/channel'],...
             'FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         xlabel('Energy-loss (eV)',...
             'FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         ylabel('Count',...
             'FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         ax = gca;
         ax.FontWeight = 'bold';
-        ax.FontSize = 14;
+        ax.FontSize = 10;
         grid on
         grid minor
     else
@@ -89,11 +89,11 @@ elseif nargin<3
         set(gca,'xticklabel',[])
         set(gca,'yticklabel',[])
         c = colorbar('FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         c.Label.String = 'Intensity';
         title(['Map (',num2str(size(I,1)),'X',num2str(size(I,2)),')'],...
             'FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
     elseif strcmpi(varargin{2},'STEM')
         EELS = varargin{1};
         I = sum(EELS.SImage, 3);
@@ -104,28 +104,28 @@ elseif nargin<3
         if((EELS.SI_y*EELS.step_size.y > 1000) && strcmp(EELS.step_size.yunit,'nm'))
             xlabel(['Columns (',num2str(sprintf('%.2f',(EELS.SI_y*EELS.step_size.y)/1000)),'\mum)'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
             plot_label_FOV(ax,(EELS.SI_y*EELS.step_size.y)/1000,'micro',EELS.SI_x,EELS.SI_y);
         else
             xlabel(['Columns (',num2str(sprintf('%.2f',EELS.SI_y*EELS.step_size.y)),EELS.step_size.yunit,')'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
             plot_label_FOV(ax,EELS.SI_y*EELS.step_size.y,EELS.step_size.yunit,EELS.SI_x,EELS.SI_y);
         end
         if((EELS.SI_x*EELS.step_size.x > 1000) && strcmp(EELS.step_size.xunit,'nm'))
             ylabel(['Rows (',num2str(sprintf('%.2f',(EELS.SI_x*EELS.step_size.x)/1000)),'\mum)'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
         else
             ylabel(['Rows (',num2str(sprintf('%.2f',EELS.SI_x*EELS.step_size.x)),EELS.step_size.xunit,')'],...
                 'FontWeight','bold',...
-                'FontSize',14);
+                'FontSize',10);
         end
         title(['Size = ',num2str(EELS.SI_x),' x ',num2str(EELS.SI_y),' pixel'],...
             'FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         c = colorbar('FontWeight','bold',...
-            'FontSize',14);
+            'FontSize',10);
         c.Label.String = 'Intensity';
         axis image
         set(gca,'xticklabel',[])
@@ -137,7 +137,7 @@ elseif nargin<3
             'LineWidth',2);
         ax = gca;
         ax.FontWeight = 'bold';
-        ax.FontSize = 14;
+        ax.FontSize = 10;
         title(['Dispersion = ',num2str((e_loss(5)-e_loss(1))/4),'eV/channel']);
         xlabel('Energy-loss (eV)');
         ylabel('Count');
