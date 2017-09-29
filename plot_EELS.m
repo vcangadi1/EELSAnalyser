@@ -68,6 +68,10 @@ handles.c = 1;
 % xlim and ylim flags to 1 for initial plot
 handles.flag = 1;
 
+% xhold and yhold
+handles.xhold = false;
+handles.yhold = false;
+
 % close_fig should be initialized to 0
 handles.close_fig = 0;
 
@@ -111,8 +115,12 @@ elseif(handles.c < 1)
 end
 
 % Saving zoom level
+if handles.xhold == true
 handles.xlim = get(handles.axes2, 'XLim');
+end
+if handles.yhold == true
 handles.ylim = get(handles.axes2, 'YLim');
+end
 
 % Plot the spectrum image & spectrum
 handles = plt(handles); % Call plt_axes1 function
@@ -127,7 +135,8 @@ function KeyPressCallback(hObject, eventdata, handles)
 handles = guidata(hObject);
 
 % Check which key is pressed and update row and column values
-switch get(handles.output,'CurrentKey')
+Ckey = get(handles.output,'CurrentKey');
+switch Ckey
     case 'uparrow'
         handles.r = handles.r - 1;
     case 'downarrow'
@@ -146,8 +155,22 @@ switch get(handles.output,'CurrentKey')
         handles.r = handles.EELS.SI_x;
     case 'escape'
         handles.close_fig = 1;
+    case 'x'
+        handles.xhold = xor(handles.xhold, 1);
+        if handles.xhold == true
+            fprintf('\nHold energy-loss axis\n');
+        else
+            fprintf('\nRelease energy-loss axis\n');
+        end
+    case 'y'
+        handles.yhold = xor(handles.yhold, 1);
+        if handles.yhold == true
+            fprintf('\nHold count axis\n');
+        else
+            fprintf('\nRelease count axis\n');
+        end
     otherwise
-        warning('Unexpected key pressed. Use only arrows, home, end, escape, pageup & pagedown keys');
+        warning('''%s'' is unexpected key. \nUse only arrows, home, end, escape, pageup & pagedown keys. \nUse x and y keys to hold and release spectrum axis',Ckey);
 end
 
 % Limit the click axis
@@ -163,8 +186,12 @@ elseif(handles.c < 1)
 end
 
 % Saving zoom level
+if handles.xhold == true
 handles.xlim = get(handles.axes2, 'XLim');
+end
+if handles.yhold == true
 handles.ylim = get(handles.axes2, 'YLim');
+end
 
 % Plot the spectrum image & spectrum
 handles = plt(handles); % Call plt_axes1 function
@@ -228,6 +255,7 @@ else
 end
 
 % Setting saved zoom level
+%{
 if handles.flag == 0 % no setting the xlim and ylim for initial plot
     if isfield(handles,'xlim')
         set(handles.axes2, 'XLim', handles.xlim);
@@ -237,6 +265,18 @@ if handles.flag == 0 % no setting the xlim and ylim for initial plot
     end
 end
 handles.flag = 0;
+%}
+if handles.xhold == true
+    if isfield(handles,'xlim')
+        set(handles.axes2, 'XLim', handles.xlim);
+    end
+end
+if handles.yhold == true
+    if isfield(handles,'ylim')
+        set(handles.axes2, 'YLim', handles.ylim);
+    end
+end
+
 
 % Display axis labels
 set(handles.axes2, 'FontSize',14,'FontWeight','bold');
