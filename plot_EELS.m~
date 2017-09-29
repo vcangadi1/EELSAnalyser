@@ -69,7 +69,7 @@ handles.c = 1;
 handles.flag = 1;
 
 % close_fig should be initialized to 0
-handles.close_fig = 0;
+
 
 % Plot the spectrum image & spectrum
 handles = plt(handles); % Call plt_axes1 function
