@@ -82,9 +82,10 @@ The visualization of EELS SI is inspired by Hyperspy. [link](http://hyperspy.org
 plotEELS(EELS)
 ```
 Simply plots the EELS data irrespective of whether the data is EELS SI, Image or a spectrum.
+
 ![SImage](images/SImage.png?raw=true)
 
-````MATLAB
+```MATLAB
 plotEELS(EELS, 'stem')
 ```
 plots only the image of EELS SI by integrating the spectrum.
