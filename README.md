@@ -77,6 +77,7 @@ EELS
 ```
 ### Visualization of Spectrum Image in  `EELSAnalyser`
 The visualization of EELS SI is inspired by Hyperspy. [link](http://hyperspy.org/hyperspy-doc/current/user_guide/visualisation.html). The command in `EELSAnalyser` for plotting EELS data is
+
 ```MATLAB
 plotEELS(EELS)
 ```
