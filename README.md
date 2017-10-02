@@ -2,7 +2,7 @@
 
 Contain all the files related to EELS analysis using matlab.
 
-Note: The files are not well organised.
+<mark>Note: The files are not well organised.</mark>
 
 ### Import EELS data into `EELSAnalyser`
 
