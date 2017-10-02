@@ -5,9 +5,9 @@ Contain all the files related to EELS analysis using matlab.
 <mark>Note: The files are not well organised.</mark>
 
 ## Table of Contents
-**[Import EELS data into `EELSAnalyser`](#import)**<br>
-**[Visualization of Spectrum Image in  `EELSAnalyser`](#visualization)**<br>
-**[Quantification of EELS Spectrum Image](#quantification)**<br>
+**[Import EELS data into `EELSAnalyser`](#import-eels-data-into-eelsanalyser)**<br>
+**[Visualization of Spectrum Image in  `EELSAnalyser`](#visualization-of-spectrum-image-in--eelsanalyser)**<br>
+**[Quantification of EELS Spectrum Image](#quantification-of-eels-spectrum-image)**<br>
 
 ## Import EELS data into `EELSAnalyser`
 
