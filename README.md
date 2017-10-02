@@ -4,7 +4,12 @@ Contain all the files related to EELS analysis using matlab.
 
 <mark>Note: The files are not well organised.</mark>
 
-### Import EELS data into `EELSAnalyser`
+## Table of Contents
+**[Import EELS data into `EELSAnalyser`](#import)**<br>
+**[Visualization of Spectrum Image in  `EELSAnalyser`](#visualization)**<br>
+**[Quantification of EELS Spectrum Image](#quantification)**<br>
+
+## Import EELS data into `EELSAnalyser`
 
 ```MATLAB
 EELS = readEELSdata('/path/to/file');
@@ -75,7 +80,7 @@ EELS
 |--energy_loss_axis : [ ]
 0   
 ```
-### Visualization of Spectrum Image in  `EELSAnalyser`
+## Visualization of Spectrum Image in  `EELSAnalyser`
 The visualization of EELS SI is inspired by Hyperspy. [link](http://hyperspy.org/hyperspy-doc/current/user_guide/visualisation.html). The command in `EELSAnalyser` for plotting EELS data is
 
 ```MATLAB
@@ -102,3 +107,27 @@ The spectrum axes can be put on hold to observe a particular energy-loss axis ra
 * Press <kbd>x</kbd> to hold the energy_loss_axis. This makes sure the energy_loss_axis limits will remain same even after navigating to different locations in the SI.
 
 * Similarly, Press <kbd>y</kbd> to hold the count axis.
+
+```MATLAB
+l = EELS.energy_loss_axis;
+% Squeeze spectrum from EELS SI data cube
+S = squeeze(EELS.SImage(10,20,:));
+% Or simply use EELS.S(ii,jj) anonymous function to extract spectrum
+S = EELS.S(10,20);
+plotEELS(l,S)
+```
+## Quantification of EELS Spectrum Image
+EELS spectrum image can be quantified using background subtraction method. The `stem_map_back_sub()` uses parallel computing toolbox from MATLAB to get the elemental maps.
+```MATLAB
+Map = stem_map_back_sub(EELS,...
+                        model_begin_eV, model_end_eV,...
+                        edge_onset_eV, delta_eV,...
+                        background_model_options);
+```
+The inputs for `stem_map_back_sub()` are:
+* `EELS` EELS structure obtained from `readEELSdata()`
+* `model_begin_eV` background model begin in `eV`.
+* `model_end_eV` background model end in `eV`.
+* `edge_onset_eV` Ionization edge onset value.
+* `delta_eV` Integration range in `eV`.
+* `background_model_options` Options such as `'pow'`, `'exp1'` or `'exp2'`. Default is inverse power-law function, `'pow'`. `'exp1'` and `'exp2'` are one and two exponential decay functions respectively.
