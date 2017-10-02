@@ -1,4 +1,4 @@
-# EELS_Matlab
+# `EELSAnalyser`
 
 Contain all the files related to EELS analysis using matlab.
 
@@ -9,7 +9,7 @@ Note: The files are not well organised.
 ```MATLAB
 EELS = readEELSdata('/path/to/file');
 ```
-The supported files are `.dm3`, `.msa`, `.mat`, `.hdf5`, `.hspy`. The `.hdf5` and `.hspy` are data exported from Hyperspy. This makes it flexible to work with Gatan DigitalMicrograph and Hyperspy.
+The supported files are `.dm3`, `.msa`, `.mat`, `.hdf5`, `.hspy`. The `.hdf5` and `.hspy` are data exported from [Hyperspy](http://hyperspy.org/). This makes it flexible to work with Gatan's [DigitalMicrograph](http://www.gatan.com/products/tem-analysis/gatan-microscopy-suite-software) and [Hyperspy](http://hyperspy.org/).
 `readEELSdata()` is combines the codes written by [Robert McLeod](https://uk.mathworks.com/matlabcentral/fileexchange/29351-dm3-import-for-gatan-digital-micrograph) (for `.dm3` format)
 ```MATLAB
 si_struct=DM3Import('/path/to/file');
@@ -19,29 +19,84 @@ and [Joshua Taillon](https://github.com/jat255/readHyperSpyH5) (for `.hdf5` and 
 [data, ax_scales, ax_units, ax_names, ax_sizes, ax_offsets, ax_navigates] = readHyperSpyH5('/path/to/file');
 ```
 `EELS` data could be spectrum image (SI), annular dark field (ADF) image or a singe spectrum. The `EELS` data structure from `readEELSdata()` contains following fields:
+* EELS Spectrum Image (3-D Spectrum Image)
+
 ```MATLAB
 EELS
 |
-|-Fullpathname : '/path/to/file.ext'
-|-E0_eV : [ ]
+|------Fullpathname : '/path/to/file.ext'
+|-------------E0_eV : [ ]
 |-exposure_time_sec : [ ]
-|-SI_y : [ ]
-|-SI_x : [ ]
-|-SI_z : [ ]
-|-SImage : [ ] % 3-D Array
-|-dispersion : [ ]
-|-offset_eV : [ ]
-|-probe_size_nm : [ ]
-|-conv_angle_mrad : [ ]
-|-coll_angle_mrad : [ ]
-|-mag : [ ]
-|-energy_loss_axis : [ ]
-|-S : [1x1 Unknown]
+|--------------SI_y : [ ]
+|--------------SI_x : [ ]
+|--------------SI_z : [ ]
+|------------SImage : [ ] % 3-D Array
+|--------dispersion : [ ]
+|---------offset_eV : [ ]
+|-----probe_size_nm : [ ]
+|---conv_angle_mrad : [ ]
+|---coll_angle_mrad : [ ]
+|---------------mag : [ ]
+|--energy_loss_axis : [ ]
+|-----------------S : [1x1 Unknown]
 |-step_size
 0   |
-    |-xunit : ' '
-    |-yunit : ' '
-    |-x : [ ]
-    |-y : [ ]
+    |--xunit : ' '
+    |--yunit : ' '
+    |------x : [ ]
+    |------y : [ ]
     0
 ```
+
+* EELS Image (2-D Image)
+```MATLAB
+EELS
+|
+|--Fullpathname : '/path/to/file.ext'
+|-------Image_y : [ ]
+|-------Image_x : [ ]
+|---------Image : [ ] % 2-D Array
+|-scale
+0   |
+    |--xunit : ' '
+    |--yunit : ' '
+    |------x : [ ]
+    |------y : [ ]
+    0
+```
+* EELS Spectrum (1-D Spectrum)
+
+```MATLAB
+EELS
+|
+|------Fullpathname : '/path/to/file.ext'
+|--------dispersion : [ ]
+|----------spectrum : [ ] % 1-D Array
+|--energy_loss_axis : [ ]
+0   
+```
+### Visualization of Spectrum Image in  `EELSAnalyser`
+The visualization of EELS SI is inspired by Hyperspy. [link](http://hyperspy.org/hyperspy-doc/current/user_guide/visualisation.html). The command in `EELSAnalyser` for plotting EELS data is
+```MATLAB
+plotEELS(EELS)
+```
+Simply plots the EELS data irrespective of whether the data is EELS SI, Image or a spectrum.
+![SImage](images/SImage.png?raw=true)
+
+````MATLAB
+plotEELS(EELS, 'stem')
+```
+plots only the image of EELS SI by integrating the spectrum.
+
+```MATLAB
+plotEELS(I, 'map')
+```
+Elemental map `I` can be visualised as an image. The colour maps can be changed as per the standard MATLAB documentation for e.g. `colormap jet` or `colormap gray`. The limits of colormaps can be changed using command `colormapeditor` in the command window of MATLAB.
+
+The additional advantage of visualizing EELS SI in `EELSAnalyser` is that there are navigational advantages using arrow keys. The location of the spectrum being displayed is the red box on the image. Use following keys to navigate <kbd>up</kbd>, <kbd>down</kbd>, <kbd>left</kbd>, <kbd>right</kbd>, <kbd>home</kbd>, <kbd>end</kbd>, <kbd>page up</kbd>, <kbd>page down</kbd>. Use <kbd>escape</kbd> key to close the image object.
+
+The spectrum axes can be put on hold to observe a particular energy-loss axis range in the spectrum.
+
+* Press <kbd>x</kbd> to hold the energy_loss_axis. This makes sure the energy_loss_axis limits will remain same even after navigating to different locations in the SI.
+
+* Similarly, Press <kbd>y</kbd> to hold the count axis.
