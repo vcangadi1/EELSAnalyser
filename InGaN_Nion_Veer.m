@@ -109,6 +109,11 @@ for ii = 30:-1:1
     end
 end
 
+%% Indium content from core-loss and plasmon loss
+
+cIn = (wcInN + wcInGaN.*c/m).*BW;
+pIn = (wpInN + wpInGaN.*c/m).*BW;
+
 %%
 
 ii = 16;

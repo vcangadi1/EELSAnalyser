@@ -13,6 +13,7 @@ InGaN = [zeros(eV2ch(l,19.55-E_off.*x)-1,1); InGaN1];
 if length(InGaN) < length(energy_loss_axis)
     z = length(energy_loss_axis) - length(InGaN);
     InGaN = [InGaN; zeros(z,1)];
+   %InGaN = [InGaN; ones(z,1)*InGaN(end)]; 
 elseif length(InGaN) > length(energy_loss_axis)
     InGaN = InGaN(1:length(energy_loss_axis));
 end
