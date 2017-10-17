@@ -24,21 +24,24 @@ S = @(ii,jj) hampel(squeeze(SImage(ii,jj,:)),17);
 %% Remove spike artifacts
 SImage = medfilt1(SImage,20,[],3,'truncate');
 
-%%
-[GaN,InN,~] = referenced_InGaN('ll_1_20.csv');
-InN(isnan(InN)) = 0;
-GaN(isnan(GaN)) = 0;
 
-
-%%
+%% Plasmon Peak Model
 
 FWHM = @(x) 4.187+4.73727.*x-5.09438.*x.^2;
 E_off = @(x) 4.1355+0.14256.*x+1.03625.*x.^2;
 Ep = @(x) 19.55-E_off(x).*x;
 A = 21110.50558;
 
-cInGaN = @(ii,jj,x) InGaN_cl(InN, GaN, x, E_off(x),l(ii,jj));
 pInGaN = @(ii,jj,x) A.*lorentz(l(ii,jj), Ep(x), FWHM(x));
+
+%% Core-loss Model
+
+[GaN,InN,~] = referenced_InGaN('ll_1_20.csv');
+InN(isnan(InN)) = 0;
+GaN(isnan(GaN)) = 0;
+
+cInGaN = @(ii,jj,x) InGaN_cl(InN, GaN, x, E_off(x),l(ii,jj));
+
 
 %P = @(ii,jj,p) p(1)*pInGaN(ii,jj,0)+p(2)*pInGaN(ii,jj,p(3))+p(4)*pInGaN(ii,jj,1);
 %C = @(ii,jj,p) p(1)*cInGaN(ii,jj,0)+p(2)*cInGaN(ii,jj,p(3))+p(4)*cInGaN(ii,jj,1);
