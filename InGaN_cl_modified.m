@@ -1,4 +1,4 @@
-function InGaN = InGaN_cl(InN, GaN, x, E_off, energy_loss_axis)
+function InGaN = InGaN_cl_modified(InN, GaN, x, E_onset, energy_loss_axis)
 
 %x = 0.9;
 %E_off
@@ -8,13 +8,13 @@ l = energy_loss_axis;
 InGaN1 = InN(169:169+540-1)*x+GaN(437:437+540-1)*(1-x);
 
 %GaN onset is 23.8, But resdue begins at 19.53
-InGaN = [zeros(eV2ch(l,19.55-E_off.*x)-1,1); InGaN1];
-%InGaN = [zeros(eV2ch(l,E_onset-(4.17))-1,1); InGaN1];
+InGaN = [zeros(eV2ch(l,E_onset-(4.17)),1);InGaN1];
 
-if length(InGaN) < length(energy_loss_axis)
+
+if length(InGaN) < length(energy_loss_axis) 
     z = length(energy_loss_axis) - length(InGaN);
-    InGaN = [InGaN; zeros(z,1)];
-   %InGaN = [InGaN; ones(z,1)*InGaN(end)]; 
+    %InGaN = [InGaN; zeros(z,1)];
+    InGaN = [InGaN; ones(z,1)*InGaN(end)]; 
 elseif length(InGaN) > length(energy_loss_axis)
     InGaN = InGaN(1:length(energy_loss_axis));
 end

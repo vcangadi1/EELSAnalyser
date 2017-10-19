@@ -28,8 +28,8 @@ SImage = medfilt1(SImage,20,[],3,'truncate');
 %% Plasmon Peak Model
 
 FWHM = @(x) 4.187+4.73727.*x-5.09438.*x.^2;
-E_off = @(x) 4.1355+0.14256.*x+1.03625.*x.^2;
-Ep = @(x) 19.55-E_off(x).*x;
+
+Ep = @(x) 19.55-4.02.*x;
 A = 21110.50558;
 
 pInGaN = @(ii,jj,x) A.*lorentz(l(ii,jj), Ep(x), FWHM(x));
@@ -40,7 +40,12 @@ pInGaN = @(ii,jj,x) A.*lorentz(l(ii,jj), Ep(x), FWHM(x));
 InN(isnan(InN)) = 0;
 GaN(isnan(GaN)) = 0;
 
-cInGaN = @(ii,jj,x) InGaN_cl(InN, GaN, x, E_off(x),l(ii,jj));
+
+E_off = @(x) 4.1355+0.14256.*x+1.03625.*x.^2;
+
+E_onset = @(x) Ep(x) + E_off(x);
+
+cInGaN = @(ii,jj,x) InGaN_cl_modified(InN, GaN, x, E_onset(x),l(ii,jj));
 
 
 %P = @(ii,jj,p) p(1)*pInGaN(ii,jj,0)+p(2)*pInGaN(ii,jj,p(3))+p(4)*pInGaN(ii,jj,1);
@@ -117,8 +122,8 @@ pIn = (wpInN + wpInGaN.*c/m).*BW;
 
 %%
 
-ii = 16;
-jj = 40;
+ii = 1;
+jj = 60;
 
 figure;
 plotEELS(l(ii,jj),S(ii,jj))
