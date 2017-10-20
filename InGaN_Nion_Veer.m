@@ -29,7 +29,10 @@ SImage = medfilt1(SImage,20,[],3,'truncate');
 
 FWHM = @(x) 4.187+4.73727.*x-5.09438.*x.^2;
 E_off = @(x) 4.1355+0.14256.*x+1.03625.*x.^2;
-Ep = @(x) 19.55-E_off(x).*x;
+%Ep = @(x) 19.35-E_off(x).*x;
+%Ga plasmon is 19.35eV but spectrum is not calibrated exactly. Hence
+%19.55eV is used.
+Ep = @(x) 19.55-4.02.*x;
 A = 21110.50558;
 
 pInGaN = @(ii,jj,x) A.*lorentz(l(ii,jj), Ep(x), FWHM(x));
@@ -117,8 +120,8 @@ pIn = (wpInN + wpInGaN.*c/m).*BW;
 
 %%
 
-ii = 16;
-jj = 40;
+ii = 30;
+jj = 60;
 
 figure;
 plotEELS(l(ii,jj),S(ii,jj))
