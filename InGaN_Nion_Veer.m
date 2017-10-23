@@ -117,6 +117,8 @@ end
 load('/Users/veersaysit/Dropbox/PhD_Thesis/BW_InGaN.mat')
 cIn = (wcInN + wcInGaN.*c/m).*BW;
 pIn = (wpInN + wpInGaN.*c/m).*BW;
+cGa = (wcGaN + wcInGaN.*(1-c/m)).*BW;
+pGa = (wpGaN + wpInGaN.*(1-c/m)).*BW;
 
 %%
 
