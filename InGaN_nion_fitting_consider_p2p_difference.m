@@ -22,8 +22,8 @@ SImage = medfilt1(SImage,20,[],3,'truncate');
 %% Generate Plasmon peaks
 rsq = zeros(EELS.SI_x,EELS.SI_y,20);
 
-for mm = 16:-1:16,
-    for nn =41:-1:41,
+for mm = 16:-1:16
+    for nn = 41:-1:41
         l = squeeze(EELS.calibrated_energy_loss_axis(mm,nn,minidx:maxidx));
         S = squeeze(SImage(mm,nn,:));
         tic;
@@ -34,7 +34,7 @@ for mm = 16:-1:16,
         
         Sp = zeros(length(l),length(In));
         
-        for i=1:length(In),
+        for i=1:length(In)
             Sp(:,i) = (2*A/pi)*(FWHM(i)./(4*(l-Ep(i)).^2+FWHM(i).^2));
         end
         
@@ -64,7 +64,7 @@ for mm = 16:-1:16,
             cInGaN = InGaN(1:767,ii);
             cGaN = InGaN(1:767,1);
             
-            X = [ pInN pInGaN pGaN cInN cInGaN cGaN];
+            X = [pInN pInGaN pGaN cInN cInGaN cGaN];
             X(X<0) = 0;
             
             y = S(1:767);
@@ -203,3 +203,28 @@ plotEELS(l(1:708),S(1:708))
 
 
 %}
+%% 
+
+ii = 16;
+jj = 41;
+
+plotEELS(l,squeeze(SImage(ii,jj,:)))
+plotEELS(l(1:767),squeeze(b(ii,jj,:))'*X')
+plotEELS(l(1:767),squeeze(b(ii,jj,1))'*X(:,1)')
+plotEELS(l(1:767),squeeze(b(ii,jj,2))'*X(:,2)')
+plotEELS(l(1:767),squeeze(b(ii,jj,3))'*X(:,3)')
+plotEELS(l(1:767),squeeze(b(ii,jj,4))'*X(:,4)')
+plotEELS(l(1:767),squeeze(b(ii,jj,5))'*X(:,5)')
+plotEELS(l(1:767),squeeze(b(ii,jj,6))'*X(:,6)')
+ylim([0 10000])
+title(['Pixel (',num2str(ii),',',num2str(jj),')'])
+legend('Spectrum',...
+'Model fit',...
+'InN bulk plasmon',...
+'InGaN bulk plamson',...
+'GaN bulk plasmon',...
+'InN core-loss',...
+'InGaN core-loss',...
+'GaN core-loss')
+grid minor
+rsquare(squeeze(SImage(ii,jj,1:767)),squeeze(b(ii,jj,:))'*X')

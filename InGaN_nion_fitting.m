@@ -98,7 +98,7 @@ for mm = EELS.SI_x:-1:1
         cInGaN = InGaN(1:708,ind);
         cGaN = InGaN(1:708,1);
         
-     X = [ pInN pInGaN pGaN cInN cInGaN cGaN];
+     X = [pInN pInGaN pGaN cInN cInGaN cGaN];
         
         y = S(1:708);
         

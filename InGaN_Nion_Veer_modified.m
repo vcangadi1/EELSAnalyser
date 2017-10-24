@@ -8,7 +8,6 @@ EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/InGaN/60kV/EELS Spectru
 %% calibrate zlp
 EELS = calibrate_zero_loss_peak(EELS);
 
-
 %%
 [~,minidx] = min(abs(EELS.calibrated_energy_loss_axis-13.005),[],3);
 [~,maxidx] = min(abs(EELS.calibrated_energy_loss_axis-27.48),[],3);
@@ -20,15 +19,16 @@ l = @(ii,jj) squeeze(EELS.calibrated_energy_loss_axis(ii,jj,minidx(8,58):maxidx(
 S = @(ii,jj) hampel(squeeze(SImage(ii,jj,:)),17);
 %S1 = hampel(S(5,58),17);
 
-
 %% Remove spike artifacts
 SImage = medfilt1(SImage,20,[],3,'truncate');
-
 
 %% Plasmon Peak Model
 
 FWHM = @(x) 4.187+4.73727.*x-5.09438.*x.^2;
-
+E_off = @(x) 4.1355+0.14256.*x+1.03625.*x.^2;
+%Ep = @(x) 19.35-E_off(x).*x;
+%Ga plasmon is 19.35eV but spectrum is not calibrated exactly. Hence
+%19.55eV is used.
 Ep = @(x) 19.55-4.02.*x;
 A = 21110.50558;
 
@@ -36,16 +36,11 @@ pInGaN = @(ii,jj,x) A.*lorentz(l(ii,jj), Ep(x), FWHM(x));
 
 %% Core-loss Model
 
-[GaN,InN,~] = referenced_InGaN('ll_1_20.csv');
+[GaN,InN,~] = referenced_InGaN1('nion coreloss consider peak distance.csv');
 InN(isnan(InN)) = 0;
 GaN(isnan(GaN)) = 0;
 
-
-E_off = @(x) 4.1355+0.14256.*x+1.03625.*x.^2;
-
-E_onset = @(x) Ep(x) + E_off(x);
-
-cInGaN = @(ii,jj,x) InGaN_cl_modified(InN, GaN, x, E_onset(x),l(ii,jj));
+cInGaN = @(ii,jj,x) InGaN_cl_modified(InN, GaN, x, E_off(x),l(ii,jj));
 
 
 %P = @(ii,jj,p) p(1)*pInGaN(ii,jj,0)+p(2)*pInGaN(ii,jj,p(3))+p(4)*pInGaN(ii,jj,1);
@@ -119,11 +114,13 @@ end
 load('/Users/veersaysit/Dropbox/PhD_Thesis/BW_InGaN.mat')
 cIn = (wcInN + wcInGaN.*c/m).*BW;
 pIn = (wpInN + wpInGaN.*c/m).*BW;
+cGa = (wcGaN + wcInGaN.*(1-c/m)).*BW;
+pGa = (wpGaN + wpInGaN.*(1-c/m)).*BW;
 
 %%
 
-ii = 1;
-jj = 60;
+ii = 24;
+jj = 51;
 
 figure;
 plotEELS(l(ii,jj),S(ii,jj))
