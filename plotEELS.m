@@ -82,18 +82,28 @@ if(nargin<2)
     end
 elseif nargin<3
     if strcmpi(varargin{2},'map')
-        I = varargin{1};
+        if ~islogical(varargin{1})
+            I = varargin{1};
+        else
+            I = varargin{1}*100;
+        end
         h = imagesc(I,[min(I(:)) max(I(:))]);
         colormap gray
         axis image
         set(gca,'xticklabel',[])
         set(gca,'yticklabel',[])
-        c = colorbar('FontWeight','bold',...
-            'FontSize',14);
-        c.Label.String = 'Intensity';
-        title(['Map (',num2str(size(I,1)),'X',num2str(size(I,2)),')'],...
-            'FontWeight','bold',...
-            'FontSize',14);
+        if ~islogical(varargin{1})
+            c = colorbar('FontWeight','bold',...
+                'FontSize',14);
+            c.Label.String = 'Intensity';
+            title(['Map (',num2str(size(I,1)),'X',num2str(size(I,2)),')'],...
+                'FontWeight','bold',...
+                'FontSize',14);
+        else
+            title(['Binary Image (',num2str(size(I,1)),'X',num2str(size(I,2)),')'],...
+                'FontWeight','bold',...
+                'FontSize',14);
+        end
     elseif strcmpi(varargin{2},'STEM')
         EELS = varargin{1};
         I = sum(EELS.SImage, 3);

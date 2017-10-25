@@ -103,8 +103,8 @@ for ii = 30:-1:1
         fprintf('(%d,%d) finished\n',ii,jj);
         csum(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj) + sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj) + sum(cInGaN(ii,jj,1))*InNc(ii,jj);
         wcGaN(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj)./csum(ii,jj);
-        wcInN(ii,jj) = cor(ii,jj).*sum(cInGaN(ii,jj,1))*InNc(ii,jj)./csum(ii,jj);
-        wcInGaN(ii,jj) = cor(ii,jj).*sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj)./csum(ii,jj);
+        wcInN(ii,jj) = sum(cInGaN(ii,jj,1))*InNc(ii,jj)./csum(ii,jj);
+        wcInGaN(ii,jj) = sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj)./csum(ii,jj);
         psum(ii,jj) = sum(pInGaN(ii,jj,0))*GaNp(ii,jj) + sum(pInGaN(ii,jj,c(ii,jj)/m))*InGaNp(ii,jj) + sum(pInGaN(ii,jj,1))*InNp(ii,jj);
         wpGaN(ii,jj) = sum(pInGaN(ii,jj,0))*GaNp(ii,jj)./psum(ii,jj);
         wpInN(ii,jj) = sum(pInGaN(ii,jj,1))*InNp(ii,jj)./psum(ii,jj);
@@ -122,19 +122,22 @@ pGa = (wpGaN + wpInGaN.*(1-c/m)).*BW;
 
 %%
 
-ii = 30;
-jj = 60;
+ii = 16;
+jj = 41;
 
 figure;
 plotEELS(l(ii,jj),S(ii,jj))
 plotEELS(l(ii,jj),squeeze(p(ii,jj,1:6,c(ii,jj)))'*X(ii,jj,c(ii,jj))')
-plotEELS(l(ii,jj),squeeze(p(ii,jj,1,c(ii,jj)))'*pInGaN(ii,jj,0)')
-plotEELS(l(ii,jj),squeeze(p(ii,jj,2,c(ii,jj)))'*pInGaN(ii,jj,c(ii,jj)/m)')
 plotEELS(l(ii,jj),squeeze(p(ii,jj,3,c(ii,jj)))'*pInGaN(ii,jj,1)')
-plotEELS(l(ii,jj),squeeze(p(ii,jj,4,c(ii,jj)))'*cInGaN(ii,jj,0)')
-plotEELS(l(ii,jj),squeeze(p(ii,jj,5,c(ii,jj)))'*cInGaN(ii,jj,c(ii,jj)/m)')
+plotEELS(l(ii,jj),squeeze(p(ii,jj,2,c(ii,jj)))'*pInGaN(ii,jj,c(ii,jj)/m)')
+plotEELS(l(ii,jj),squeeze(p(ii,jj,1,c(ii,jj)))'*pInGaN(ii,jj,0)')
 plotEELS(l(ii,jj),squeeze(p(ii,jj,6,c(ii,jj)))'*cInGaN(ii,jj,1)')
-legend('Spectrum','Model','Plasmon GaN','Plasmon InGaN','Plasmon InN','Core-loss GaN','Core-loss InGaN','Core-loss InN')
+plotEELS(l(ii,jj),squeeze(p(ii,jj,5,c(ii,jj)))'*cInGaN(ii,jj,c(ii,jj)/m)')
+plotEELS(l(ii,jj),squeeze(p(ii,jj,4,c(ii,jj)))'*cInGaN(ii,jj,0)')
+legend('Spectrum','Model fit','InN bulk plasmon','InGaN bulk plasmon',...
+    'GaN bulk plasmon','InN core-loss','InGaN core-loss','GaN core-loss')
 title(['x = ',num2str(c(ii,jj)/m)]);
 %plotEELS(l(ii,jj),p(7,c)'*l(ii,jj)')
 %plotEELS(l(ii,jj),p(8,c)'*ones(length(l(ii,jj)),1)')
+grid minor
+rsquare(S(ii,jj), squeeze(p(ii,jj,1:6,c(ii,jj)))'*X(ii,jj,c(ii,jj))')

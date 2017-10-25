@@ -1,4 +1,4 @@
-function [pixel, BW] = EELS_pixel(Image,Option,BW,plot_enable)
+function [pixel, BW] = EELS_pixel(Image, Option, BW, plot_enable)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Input:
 %        Image = Any 2-D image

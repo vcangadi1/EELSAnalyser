@@ -22,8 +22,8 @@ SImage = medfilt1(SImage,20,[],3,'truncate');
 %% Generate Plasmon peaks
 rsq = zeros(EELS.SI_x,EELS.SI_y,20);
 
-for mm = 16:-1:16
-    for nn = 41:-1:41
+for mm = 30:-1:1
+    for nn = 60:-1:1
         l = squeeze(EELS.calibrated_energy_loss_axis(mm,nn,minidx:maxidx));
         S = squeeze(SImage(mm,nn,:));
         tic;
@@ -52,7 +52,7 @@ for mm = 16:-1:16
         
         InGaN = [GaN,InGaN,InN];
         %%
-        for ii = 1:20,
+        for ii = 1:20
             
             
           
@@ -208,6 +208,7 @@ plotEELS(l(1:708),S(1:708))
 ii = 16;
 jj = 41;
 
+figure
 plotEELS(l,squeeze(SImage(ii,jj,:)))
 plotEELS(l(1:767),squeeze(b(ii,jj,:))'*X')
 plotEELS(l(1:767),squeeze(b(ii,jj,1))'*X(:,1)')
