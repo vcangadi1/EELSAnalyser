@@ -205,8 +205,8 @@ plotEELS(l(1:708),S(1:708))
 %}
 %% 
 
-ii = 16;
-jj = 41;
+ii = 30;
+jj = 60;
 
 figure
 plotEELS(l,squeeze(SImage(ii,jj,:)))

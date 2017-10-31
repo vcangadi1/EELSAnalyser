@@ -103,14 +103,27 @@ for ii = 30:-1:1
         fprintf('(%d,%d) finished\n',ii,jj);
         csum(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj) + sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj) + sum(cInGaN(ii,jj,1))*InNc(ii,jj);
         wcGaN(ii,jj) = sum(cInGaN(ii,jj,0))*GaNc(ii,jj)./csum(ii,jj);
-        wcInN(ii,jj) = sum(cInGaN(ii,jj,1))*InNc(ii,jj)./csum(ii,jj);
-        wcInGaN(ii,jj) = sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj)./csum(ii,jj);
+        wcInN(ii,jj) = sum(cInGaN(ii,jj,1))*InNc(ii,jj)./csum(ii,jj); %correction applied in next step
+        wcInGaN(ii,jj) = sum(cInGaN(ii,jj,c(ii,jj)/m))*InGaNc(ii,jj)./csum(ii,jj);%correction applied in next step
         psum(ii,jj) = sum(pInGaN(ii,jj,0))*GaNp(ii,jj) + sum(pInGaN(ii,jj,c(ii,jj)/m))*InGaNp(ii,jj) + sum(pInGaN(ii,jj,1))*InNp(ii,jj);
         wpGaN(ii,jj) = sum(pInGaN(ii,jj,0))*GaNp(ii,jj)./psum(ii,jj);
         wpInN(ii,jj) = sum(pInGaN(ii,jj,1))*InNp(ii,jj)./psum(ii,jj);
         wpInGaN(ii,jj) = sum(pInGaN(ii,jj,c(ii,jj)/m))*InGaNp(ii,jj)./psum(ii,jj);
     end
 end
+
+%% Truncation correction
+load('/Users/veersaysit/Dropbox/PhD_Thesis/Low_loss_Plasmon_Coreloss_fit/maskInGaN.mat')
+InN_cor = In_cl_trunc_corr(1).*maskInGaN;
+InN_cor(InN_cor==0) = 1;
+wcInN = wcInN.*InN_cor.*BW;
+
+InGaN_cor = cor(1:30,1:60).*maskInGaN;
+InGaN_cor(InGaN_cor==0) = 1;
+wcInGaN = wcInGaN.*InGaN_cor.*BW;
+
+%wcGaN = wcGaN.*2./(InGaN_cor+InN_cor).*BW;
+wcGaN = wcGaN./InN_cor.*BW;
 
 %% Indium content from core-loss and plasmon loss
 

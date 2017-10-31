@@ -14,7 +14,7 @@ Z = low_loss_spectrum;
 l = energy_loss_axis;
 d = mean(diff(l));
 
-[~,locs] = findpeaks(Z,'SortStr','descend','MinPeakDistance',1/(5*d));
+[~,locs] = findpeaks(Z,'SortStr','descend','MinPeakDistance',1/d);
 
 if length(locs) < 2
     tlambda = 0;
