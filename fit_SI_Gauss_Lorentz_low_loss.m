@@ -2,12 +2,13 @@ clc
 clear all
 
 EELS = readEELSdata('EELS Spectrum Image1-thickness-map.dm3');
+EELS.SImage(5,44,:) = EELS.SImage(5,45,:);
 
 %% fit with TOL as fitting parameter
 
 SI = zeros(size(EELS.SImage));
 
-for ii = EELS.SI_x:-1:1
+for ii = 5:-1:1
     for jj = EELS.SI_y:-1:1
         
         S = EELS.S(ii,jj);
@@ -30,7 +31,8 @@ for ii = EELS.SI_x:-1:1
         SI(ii,jj,:) = p(1)*(poisson(n,p(2))*[G(l,E0,W0),plural_scattering(L(l,n(2:end)*p(3),p(4)),G(l,E0,p(5))')]')';
         A(ii,jj) = p(1);
         t_map(ii,jj) = p(2);
-        R2(ii,jj) = rsquare(S,p(1)*(poisson(n,p(2))*[G(l,E0,W0),plural_scattering(L(l,n(2:end)*p(3),p(4)),G(l,E0,p(5))')]')');
+        %R2(ii,jj) = rsquare(S,p(1)*(poisson(n,p(2))*[G(l,E0,W0),plural_scattering(L(l,n(2:end)*p(3),p(4)),G(l,E0,p(5))')]')');
+        R2(ii,jj) = rsquare(S,p(1)*(poisson(n,p(2))*[G(l,0,W0),L(l,n(2:end)*p(3),p(4))]')');
         fprintf('ii = %d, jj = %d\n',ii,jj);
     end
 end
