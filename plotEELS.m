@@ -77,6 +77,7 @@ if(nargin<2)
         ax.FontSize = 14;
         grid on
         grid minor
+        hold on
     else
         warning('No spectrum input is passed');
     end
@@ -151,10 +152,10 @@ elseif nargin<3
         title(['Dispersion = ',num2str((e_loss(5)-e_loss(1))/4),'eV/channel']);
         xlabel('Energy-loss (eV)');
         ylabel('Count');
-        hold on
         hline(0);
         grid on
         grid minor
+        hold on
     end
 end
 %% If output argument is present then assign figure variable to h

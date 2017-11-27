@@ -64,7 +64,7 @@ cInGaN = @(ii,jj,x) InGaN_cl_modified(InN, GaN, x, E_off(x),l(ii,jj));
 %p = lsqcurvefit(fun,p0,l(3,59),S1,lb,ub,options);
 
 %%
-m = 20;
+m = 10000;
 %X = @(ii,jj,xx) [pInGaN(ii,jj,0) pInGaN(ii,jj,xx/m) pInGaN(ii,jj,1) cInGaN(ii,jj,0) cInGaN(ii,jj,xx/m) cInGaN(ii,jj,1) l(ii,jj) ones(length(l(ii,jj)),1)];
 X = @(ii,jj,xx) [pInGaN(ii,jj,0) pInGaN(ii,jj,xx/m) pInGaN(ii,jj,1) cInGaN(ii,jj,0) cInGaN(ii,jj,xx/m) cInGaN(ii,jj,1)];
 

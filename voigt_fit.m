@@ -60,9 +60,9 @@ G = @(E,E0,W0) 1./(W0./(2*sqrt(log(4))))./sqrt(2*pi)*exp(-((E-E0)/(sqrt(2) * (W0
 
 %%
 
-fit_error = @(p) 
+%fit_error = @(p) 
 
-options = optimoptions(@fmincon,'Display','iter','MaxIterations',1500,'PlotFcns',{@optimplotx,@optimplotfval,@optimplotfunccount});
+%options = optimoptions(@fmincon,'Display','iter','MaxIterations',1500,'PlotFcns',{@optimplotx,@optimplotfval,@optimplotfunccount});
 
-p = fmincon(fit_error,p0,[],[],[],[],lb,ub,[],options);
+%p = fmincon(fit_error,p0,[],[],[],[],lb,ub,[],options);
 

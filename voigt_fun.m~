@@ -1,0 +1,3 @@
+function y = voigt_fun(x,W0,Ep,Wp)
+
+1./(W0./(2*sqrt(log(4))))./sqrt(2*pi)*exp(-((E-E0)/(sqrt(2) * (W0./(2*sqrt(log(4)))))).^2)

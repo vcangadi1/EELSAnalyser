@@ -32,7 +32,7 @@ Opt{1,3} = 'StartPoint';
 switch fit_type
     
     case '2'
-        fit_type = 'a*(x-b).^0.5';
+        fit_type = 'a*sqrt_fun(x,b).^0.5';
         Opt{2,1} = [1,0];
         Opt{2,2} = [1E10,6];
         Opt{2,3} = [3000,3.4];
@@ -40,21 +40,21 @@ switch fit_type
         Power = 0.5;
         Const = 0;
     case '2c'
-        fit_type = 'a*(x-b).^0.5+d';
+        fit_type = 'a*sqrt_fun(x,b).^0.5+d';
         Opt{2,1} = [1,0,0];
         Opt{2,2} = [1E10,6,1E10];
         Opt{2,3} = [3000,3.4,1];        
         Power = 0.5;
         Const = NaN;
     case '3'
-        fit_type = 'a*(x-b).^c';
+        fit_type = 'a*sqrt_fun(x,b).^c';
         Opt{2,1} = [1,0,0.1];
         Opt{2,2} = [1E10,6,0.8];
         Opt{2,3} = [3000,3.4,0.5];
         Power = NaN;
         Const = 0;
     case '3c'
-        fit_type = 'a*(x-b).^c+d';
+        fit_type = 'a*sqrt_fun(x,b).^c+d';
         Opt{2,1} = [1,0,0,0];
         Opt{2,2} = [1E10,6,1,1E10];
         Opt{2,3} = [3000,3.4,0.5,1];
@@ -75,4 +75,4 @@ end
 if isnan(Const)
     Const = f.d;
 end
-Sqrtfun = @(E,Eg,Power,Const) (E-Eg).^Power+Const;
+Sqrtfun = @(E,Eg,Power,Const) sqrt_fun(E,Eg).^Power+Const;
