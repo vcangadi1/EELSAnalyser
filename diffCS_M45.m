@@ -45,7 +45,7 @@ r = l-l(1)+d;
 %% Calculate differential cross section
 
 %difcs = gradient(arrayfun(@(ii) Sigpar(Z,r(ii),'M45',E0,beta(ii))/10^-24, (1:247)'));
-difcs = diff(arrayfun(@(ii) Sigpar(Z,r(ii),'M45',E0,beta(ii))/10^-24, (1:247)'));
+difcs = diff(arrayfun(@(ii) Sigpar(Z,r(ii),'M45',E0,beta(ii)), (1:247)'));
 
 
 %% Extrapolate from 247 points to end of spectrum (1024 or 2048 pixels)

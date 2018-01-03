@@ -20,9 +20,9 @@ y = size(I,1); % rows
 
 if nargin < 2
     [c,r] = meshgrid(1:x,1:y);
-    p0 = [1,185,134,1,1];
-    lb = [1,1,100,1,1];
-    ub = [];
+    p0 = [1,73,64,1,1];
+    lb = [1,50,50,1,1];
+    ub = [inf,100,100,inf,inf];
 elseif nargin < 3
     [c,r] = meshgrid(1:x,r_axis);
     p0 = [1,150,0,1,1];

@@ -3,6 +3,7 @@ function [p, R2, adjR2, fun, back] = mlls_fit_modified(core_loss_spectrum, energ
 
 dfc = Diff_cross_sections;
 
+
 % Plural scattering
 if nargin == 7
     dfc = plural_scattering(dfc, Optional_lowloss_spectrum);
@@ -34,21 +35,26 @@ switch Fit_Type
         
         %% define lb, ub, p0 for lsqcurvefit
         
-        lb = [ones(1,size(dfc,2)) * -1000, -10, 0];
-        ub = [ones(1,size(dfc,2)) * 1E4, 10, 1E4];
-        p0 = [ones(1,size(dfc,2)) * 30, 1, 1];
+        %lb = [ones(1,size(dfc,2)) * -1000, -10, 0];
+        %ub = [ones(1,size(dfc,2)) * 1E4, 10, 1E4];
+        %p0 = [ones(1,size(dfc,2)) * 30, 1, 1];
+        lb = [ones(1,size(dfc,2)) * -1000];
+        ub = [ones(1,size(dfc,2)) * 1E4];
+        p0 = [ones(1,size(dfc,2)) * 30];
         
         %% fit background
         tic;
         %fun = @(p,l) ([p(1),p(1)+p(2),p(1)+p(2)+p(3)] * dfc')';
-        fun = @(p,l) [dfc,l,ones(length(l),1)] * p';
+        %fun = @(p,l) [dfc,l,ones(length(l),1)] * p';
+        fun = @(p,l) dfc * p';
         options = optimoptions(@lsqcurvefit,'display','none');
         p = lsqcurvefit(fun,p0,l,rS,lb,ub,options);
         [R2,adjR2] = rsquare(rS, fun(p,l),size(dfc,2)+1);
         toc;
         
         %% Redefine simpler function
-        fun = @(p) [dfc,l,ones(length(l),1)] * p';
+        %fun = @(p) [dfc,l,ones(length(l),1)] * p';
+        fun = @(p) dfc * p';
         
         %% display
         %disp(p);

@@ -45,6 +45,11 @@ clear all
 %l = (1:1024)'* 0.05;
 %l = calibrate_zero_loss_peak(l,S,'gauss');
 
+%% GaAs 1s FL
+EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/GaAs100_Q4_EELStest_130705/Pos1_20muCA/Profile Of EELS_0.6mm_1s (deconvolved).dm3');
+S = EELS.spectrum;
+l = EELS.energy_loss_axis;
+
 %% Smooth spectrum
 SS = [S(1:eV2ch(l,2.35));smooth(S(eV2ch(l,2.4):end),0.05,'rloess')];
 
@@ -73,12 +78,12 @@ Zp = [Z(1:eV2ch(l,2.35));feval(Spline(l(eV2ch(l,2.05):end),Z(eV2ch(l,2.05):end),
 %flp = [fl(1:eV2ch(l,0.95));feval(Spline(l(eV2ch(l,0.95):end),fl(eV2ch(l,0.95):end),0.5),l(eV2ch(l,1):end))];
 
 %% Define Start, Stop and Window sizes in eV
-strt = 0;
-stp = 10;
+strt = 0; %in eV
+stp = 10; %in eV
 
-for k = 20:-1:1
+for k = 20:-1:1 %k is a counter
 
-w = k*0.5;
+w = k*0.5; % w is in eV
 %w = 3; k = 1;
 
 for ii = eV2ch(l,stp):-1:eV2ch(l,strt+w)
@@ -120,9 +125,12 @@ ylabel('Amplitude (Ag)')
 opts = statset('Display','final');
 [idx,C] = kmeans([R2(:), Eg(:)],4,'Distance','cityblock',...
 'Replicates',5,'Options',opts);
-figure;
+fig1 = figure;
+% Create axes
+axes1 = axes('Parent',fig1);
+hold(axes1,'on');
+
 plot(R2(idx==1),Eg(idx==1),'r.','MarkerSize',12)
-hold on
 plot(R2(idx==2),Eg(idx==2),'g.','MarkerSize',12)
 plot(R2(idx==3),Eg(idx==3),'m.','MarkerSize',12)
 plot(R2(idx==4),Eg(idx==4),'c.','MarkerSize',12)
@@ -133,4 +141,20 @@ legend('Cluster 1','Cluster 2','Cluster 3','Cluster 4','Centroids',...
 title 'Cluster Assignments and Centroids'
 grid on
 grid minor
+% Create title
+title('Cluster Assignments and Centroids');
+xlabel('R^2')
+ylabel('Bandgap (E_g in eV)')
+
+xlim([0 1])
+
+box(axes1,'on');
+grid(axes1,'on');
+% Set the remaining axes properties
+set(axes1,'FontSize',14,'FontWeight','bold','XMinorGrid','on','YMinorGrid',...
+    'on','ZMinorGrid','on');
+% Create legend
+legend1 = legend(axes1,'show');
+set(legend1,'Location','northwest','FontSize',14,'Box','on');
+
 hold off

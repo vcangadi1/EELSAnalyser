@@ -2,8 +2,8 @@ clc
 clear all
 
 %% Solar cell
-EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/EELS Spectrum Image disp0.5offset250time0.5s.dm3');
-%load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp0.5offset250time0.5s.mat');
+%EELS = readEELSdata('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/EELS Spectrum Image disp0.5offset250time0.5s.dm3');
+load('/Users/veersaysit/Desktop/EELS data/Ge-basedSolarCell_24082015/artifact_removed_EELS Spectrum Image disp0.5offset250time0.5s.mat');
 EELS.SImage = EELS.SImage./0.5; %normalise exposure time
 EELS = change_dimension(EELS,90,43);
 l = EELS.energy_loss_axis;

@@ -42,6 +42,8 @@ else
     rEELS.energy_loss_axis = resample(EELS.energy_loss_axis,double(p),double(q));
 end
 
+rEELS.SImage = rEELS.SImage.*byfactor;
+
 clc;
 fprintf('dispersion is changed to %f eV/channel\n', rEELS.dispersion);
 strucdisp(rEELS)
