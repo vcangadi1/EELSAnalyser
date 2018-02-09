@@ -217,7 +217,7 @@ plotEELS(l(1:767),squeeze(b(ii,jj,3))'*X(:,3)')
 plotEELS(l(1:767),squeeze(b(ii,jj,4))'*X(:,4)')
 plotEELS(l(1:767),squeeze(b(ii,jj,5))'*X(:,5)')
 plotEELS(l(1:767),squeeze(b(ii,jj,6))'*X(:,6)')
-ylim([0 10000])
+ylim([0 15000])
 title(['Pixel (',num2str(ii),',',num2str(jj),')'])
 legend('Spectrum',...
 'Model fit',...

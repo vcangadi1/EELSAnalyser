@@ -131,8 +131,8 @@ pGa = (wpGaN + wpInGaN.*(1-c/m)).*BW;
 
 %%
 
-ii = 16;
-jj = 41;
+ii = 30;%ii = 16;
+jj = 60;%jj = 41;
 
 figure;
 plotEELS(l(ii,jj),S(ii,jj))
