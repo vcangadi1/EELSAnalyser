@@ -1,3 +1,0 @@
-
-EELS = readEELSdata;
-
