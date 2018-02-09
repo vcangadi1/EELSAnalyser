@@ -1,8 +1,6 @@
 # `EELSAnalyser`
 
-Contain all the files related to EELS analysis using matlab.
-
-**Note: The files are not well organised.**
+**Note: The documentation is not complete. It has basic import, visualising EELS and quantification through background subtraction.**
 
 ## Table of Contents
 **[Import EELS data into `EELSAnalyser`](#import-eels-data-into-eelsanalyser)**<br>
