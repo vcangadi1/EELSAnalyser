@@ -1,6 +1,8 @@
 # `EELSAnalyser`
 
-**Note: The documentation is not complete. It has basic import, visualising EELS and quantification through background subtraction.**
+**Note 1: If this package is used please cite Angadi, V. C. et al (2016) [DOI: 10.1111/jmi.12397](https://onlinelibrary.wiley.com/doi/full/10.1111/jmi.12397).
+
+**Note2: The documentation is not complete. It has basic import, visualising EELS and quantification through background subtraction.**
 
 ## Table of Contents
 **[Import EELS data into `EELSAnalyser`](#import-eels-data-into-eelsanalyser)**<br>
