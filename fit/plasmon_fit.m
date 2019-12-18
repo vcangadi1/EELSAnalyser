@@ -1,4 +1,4 @@
-function [Wp, Ep, Ap, L, gofp] = plasmon_fit(energy_loss_axis, low_loss_spectrum)
+function [Wp, Ep, Ap, L, gofp] = plasmon_fit(energy_loss_axis, low_loss_spectrum, optional_zlp_logical)
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Input :
@@ -14,6 +14,11 @@ function [Wp, Ep, Ap, L, gofp] = plasmon_fit(energy_loss_axis, low_loss_spectrum
 %                    gofp - Goodness of fit
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Number of input
+if nargin < 3
+    optional_zlp_logical = 1;
+end
+
 %% Copy input variables to local variables
 if isrow(energy_loss_axis)
     l = energy_loss_axis';
@@ -27,23 +32,23 @@ else
     Z = low_loss_spectrum;
 end
 
-%% Calibrate zero loss peak to 0eV
+%% Estimate approx Plasmon peak
+if optional_zlp_logical == 1
+    % Calibrate zero loss peak to 0eV
+    l = calibrate_zero_loss_peak(l,Z,'Gaussian');
+    % Find approximate plasmon peak and width
+    aprox_Ep = plasmon_peak(l,Z,1);
+else
+    aprox_Ep = plasmon_peak(l,Z,0);
+end
 
-%[~,E0,~,~] = zero_loss_fit(l,Z);
-%l = l - E0;
-
-l = calibrate_zero_loss_peak(l,Z,'Gaussian');
-
-%% Find approximate plasmon peak and width
-
-aprox_Ep = plasmon_peak(l,Z);
 %aprox_FWHM = plasmon_width(l,Z);
 aprox_FWHM = 20;
 
 %% Calculate Lorentz function fitting range
 
-[~,lpos] = min(abs(l-(aprox_Ep-0.2*aprox_FWHM)));
-[~,rpos] = min(abs(l-(aprox_Ep+0.12*aprox_FWHM)));
+[~,lpos] = min(abs(l-(aprox_Ep-0.1*aprox_FWHM)));
+[~,rpos] = min(abs(l-(aprox_Ep+0.05*aprox_FWHM)));
 
 if lpos <= rpos && rpos - lpos + 1 < 3
     lpos = lpos - 1;
